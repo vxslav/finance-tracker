@@ -1,11 +1,12 @@
-import Header from "./components/Header"
-
+import Header from "./components/Header";
+import Home from "./HomePage";
+import './main.css';
 function App() {
   return (
     
     <>
         <Header />
-        <h1>Welcome, to Finance Tracker</h1>
+        <Home />
     </>
     
   );
