@@ -5,7 +5,6 @@ function App() {
     
     <>
         <Header />
-        <h1>Welcome, to Finance Tracker</h1>
     </>
     
   );
