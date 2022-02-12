@@ -3,12 +3,10 @@ import Home from "./HomePage";
 import './main.css';
 function App() {
   return (
-    
     <>
         <Header />
         <Home />
     </>
-    
   );
 }
 
