@@ -1,9 +1,9 @@
 import React from "react";
-import AddButtons from "./components/AddButtons";
-import { Chart } from './components/Chart';
-import{ PieChart } from './components/PieChart';
+import AddButtons from "./AddButtons";
+import { Chart } from './Chart';
+import{ PieChart } from './PieChart';
 import styled from 'styled-components';
-import Filters from './components/Filters';
+import Filters from './Filters';
 export default function Home() {
     return (
         <>
