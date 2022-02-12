@@ -1,10 +1,13 @@
+import Header from "./components/Header"
+
 function App() {
   return (
-    <div className="App">
-      <header>
+    
+    <>
+        <Header />
         <h1>Welcome, to Finance Tracker</h1>
-      </header>
-    </div>
+    </>
+    
   );
 }
 
