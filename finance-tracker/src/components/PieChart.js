@@ -1,5 +1,4 @@
 
-import { faker } from '@faker-js/faker';
 import styled from 'styled-components'
 import React from 'react';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
