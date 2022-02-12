@@ -11,7 +11,7 @@ import {
   Legend,
   ArcElement,
 } from 'chart.js';
-import { Line, Pie } from 'react-chartjs-2';
+import { Line } from 'react-chartjs-2';
 import { faker } from '@faker-js/faker'
 
 ChartJS.register(
@@ -63,5 +63,5 @@ export function Chart() {
 }
 
 const ChartContainer = styled.div`
-  width: 70%;
+  width: 80%;
 `
