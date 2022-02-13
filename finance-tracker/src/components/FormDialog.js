@@ -38,7 +38,7 @@ export default function FormDialog(props) {
             fullWidth
             variant="standard"
           />
-          {props.value === "Expense" && (
+          {props.value === "Expense" || props.value === "Savings" && (
             <TextField
             margin="dense"
             id="name"

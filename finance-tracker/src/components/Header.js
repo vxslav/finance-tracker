@@ -1,17 +1,34 @@
 import { Link } from "react-router-dom";
 import styles from "./styles/nav.module.css";
 import styled from 'styled-components';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import { useEffect, useState } from "react";
 
 export default function Header(){
-   
+    useEffect(() => {
+
+        window.addEventListener("resize", handleHeaderOnResize);
+        return () => {
+            window.removeEventListener("resize", handleHeaderOnResize);
+        }
+    }, []);
+    const [navStatus, setNavStatus] = useState(false);
+    const handleHeaderOnResize = () => {
+        
+    }
     return (
-        <StyledHeader>
+        <StyledHeader status={navStatus}>
             <Logo src="logo.png" />
             <Link className={styles.btn} to="/home">Home</Link>
             <Link className={styles.btn} to="/about">About us</Link>
             <Link className={styles.btn} to="/login">Login</Link>
             <Link className={styles.btn} to="/register">Register</Link>
             <Balance><Italic>Current Balance:</Italic> BGN 0.00</Balance>
+            <div>
+                <Link className={styles.profile} to="/profile">
+                    <AccountCircleIcon fontSize="large"/>
+                </Link>
+            </div>
         </StyledHeader>
     );
 }
@@ -30,6 +47,7 @@ const StyledHeader = styled.header`
     border-bottom: 1px solid rgba(0,0,0,.1);
 
     @media (max-width: 768px) {
+        
         height: auto;
         flex-flow: column;
         align-items: flex-start;
@@ -54,8 +72,4 @@ const Logo = styled.img`
     margin-left: 20px;
     width: 40px;
     height: 40px;
-
-    @media (max-width: 768px) {
-        cursor: pointer;
-    }
 `;
