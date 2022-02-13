@@ -46,11 +46,10 @@ const Balance = styled.div`
     &:hover {
         color: #176CC0;
     }
-`
-
+`;
 const Italic = styled.span`
     font-style: italic;
-`
+`;
 const Logo = styled.img`
     margin-left: 20px;
     width: 40px;
@@ -59,5 +58,4 @@ const Logo = styled.img`
     @media (max-width: 768px) {
         cursor: pointer;
     }
-
-`
+`;

@@ -1,4 +1,5 @@
 import styles from "./styles/about_us.module.css"
+import Form from './ContactForm';
 
 export default function AboutUsPage(){
     return (
@@ -31,7 +32,7 @@ export default function AboutUsPage(){
             </div>
 
             <div className={styles.restContent}>
-
+               
             </div>
             
         </div>
