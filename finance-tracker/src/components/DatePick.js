@@ -17,6 +17,7 @@ export default function DatePick(props){
                 views={['year', 'month', 'day']}
                 value={value}
                 onChange={(newValue) => {
+                    const data = JSON.stringify(newValue["_d"]).slice(0,11);
                     setValue(newValue);
                 }}
                 renderInput={(params) => <TextField {...params} />}

@@ -14,6 +14,7 @@ export default function BasicDatePicker(props) {
         label={props.label}
         value={value}
         onChange={(newValue) => {
+          console.log(newValue);
           setValue(newValue);
         }}
         renderInput={(params) => <TextField {...params} />}
