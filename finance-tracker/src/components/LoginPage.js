@@ -6,19 +6,29 @@ import Card from '@mui/material/Card';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { loginAction } from '../redux/actions/userActions';
+
 
 export default function LoginPage(){
-
-    const [email, setEmail] = useState("");
-    const [pass, setPass] = useState("");
+    const dispatch = useDispatch();
+    const [email, setEmail] = useState();
+    const [pass, setPass] = useState();
     const [rememberMe, setRememberMe] = useState(false);
-
     const handleInput = e => {
         if(e.target.name === "loginEmail") {
-            setEmail(e.target.value.trim());
+            setEmail( e.target.value);
+            setTimeout(() => {
+                    console.log(email)
+            }, 2000);
         } else if(e.target.name === "loginPass") {
-            setPass(e.target.value.trim());
+            setPass(e.target.value);
+            console.log(pass)
         } 
+    }   
+    const handleLogin = () => {
+       
+       
     }
 
     return (
@@ -45,7 +55,7 @@ export default function LoginPage(){
                     </div>
                     <div className={styles.btnCheckContainer}>
                         <FormControlLabel control={<Checkbox />} label="Remember me" />
-                        <Button variant="contained" disabled={(email && pass) ? false : true}>Sign in</Button>
+                        <Button variant="contained" disabled={(email && pass) ? false : true} onClick={handleLogin}>Sign in</Button>
                     </div>
                     <Link to="/register"> You don't have an account? Sign up</Link>
                 </div>    

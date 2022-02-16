@@ -11,4 +11,24 @@ export default class User {
         this.expense = [],
         this.savings = [];
     }
+    
+}
+
+class UserHandler {
+    constructor() {
+        this.users = []
+    }
+
+    rememberLogin(email, password) {
+        let user = this.users.find(u => u.email === email && u.password === password);
+        localStorage.setItem('logged', user.id);
+    }
+    forgetLogin(email, password) {
+        let user = this.users.find(u => u.email === email && u.password === password);
+        sessionStorage.setItem('logged', user.id);
+    }
+    logout() {
+        localStorage.getItem('logged') ? localStorage.removeItem("logged") : null;
+        sessionStorage.getItem('logged') ? sessionStorage.removeItem('logged') : null;
+    }
 }
