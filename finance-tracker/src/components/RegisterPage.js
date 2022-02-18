@@ -11,9 +11,12 @@ import { auth } from "../firebase";
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { db } from "../firebase";
 import { getDocs, addDoc, updateDoc, deleteDoc, doc, collection } from "firebase/firestore";
+import { useDispatch } from 'react-redux';
+import { setSnackbar } from '../redux/actions/snackbarActions';
 
 export default function RegisterPage(){
-
+    const dispatch = useDispatch();
+    
     const [userData, setUserData] = useState({firstName: "", lastName: "", email: "", pass: "", confirm: "", birthdate: "", startBudget: ""});
 
     const [currency, setCurrency] = useState("");
@@ -59,6 +62,7 @@ export default function RegisterPage(){
                 try{
                     const user = userCredential.user;
                     createUser();
+                   dispatch(setSnackbar(true, "success", "Registration successfull!"))
                 }
                 catch(err){
                     setHasError(true);

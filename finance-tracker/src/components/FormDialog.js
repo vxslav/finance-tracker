@@ -9,34 +9,67 @@ import BasicDatePicker from './DatePicker';
 import { StyledEngineProvider } from '@mui/material/styles';
 import CategoryPicker from "./CategoryPicker";
 import styled from 'styled-components';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { addExpenseAction, addGoalAction, addIncomeAction, addBudgetAction } from '../redux/actions/userActions';
+import { useDispatch, useSelector } from 'react-redux';
+import { setSnackbar } from '../redux/actions/snackbarActions';
 
 export default function FormDialog(props) {
+
   const [open, setOpen] = useState(false);
   const [amount, setAmount] = useState(0);
   const [descr, setDescr] = useState("");
-  const [date, setDate] = useState(new Date());
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [fromDate, setFromDate] = useState(null);
+  const [toDate, setToDate] = useState(null);
   const [category, setCategory] = useState("");
-// there's a one char delay on input/change if we console.log the result
+  const [account, setAccount] = useState("");
+  const dispatch = useDispatch();
+
   const handleClickOpen = () => {
     setOpen(true);
   };
-
   const handleClose = () => {
     setAmount(0);
     setDescr("");
+    setAccount("");
+    setCategory("");
+    setFromDate(null);
+    setSelectedDate(null);
+    setToDate(null);
     setOpen(false);
-    
   };
-
-  const handleAdd = (clickAction, val) => {
-    if(typeof clickAction != "undefined"){
-      clickAction(Number(val));
+  const handleAdd = (value) => {
+    dispatch(setSnackbar(true, "success", "Transaction added!"))
+    let obj = {
+      amount,
+      descr,
+      category,
+      date: selectedDate,
+      account
     }
-    setOpen(false);
-    setAmount(0);
+      switch(value) {
+          case "Expense" :
+            dispatch(addExpenseAction(obj))
+            break;
+          case "Savings": 
+            dispatch(addGoalAction(obj))
+            break;
+          case "Income" : 
+            dispatch(addIncomeAction(obj))
+            break;
+          case "Budget" : {
+            let obj = {
+              amount, 
+              category,
+              account,
+              from: fromDate, 
+              to: toDate
+            }
+            dispatch(addBudgetAction(obj))
+          }
+      }
   };
-
   const handleInput = (ev) => {
     switch(ev.target.name) {
       case "amount": 
@@ -45,12 +78,7 @@ export default function FormDialog(props) {
       case "description": 
           setDescr(ev.target.value);
           break;
-      case "category"  :
-        setCategory(ev.target.value);
-        console.log(category);
-        break;
     }
-   
   }
 
   return (
@@ -73,7 +101,7 @@ export default function FormDialog(props) {
             value={amount}
             onChange={handleInput}
           />
-          {(props.value === "Expense" || props.value === "Savings") && (
+          
             <TextField
             margin="dense"
             id="name"
@@ -85,23 +113,33 @@ export default function FormDialog(props) {
             value={descr}
             onInput={handleInput}
           />
-          )}
+          
           
           <Pickers>
             <StyledEngineProvider injectFirst>
-              <BasicDatePicker label="Choose date" />
-              {props.value === "Expense" && (<CategoryPicker name="category" onChange={handleInput}/>)}
+             
+              {props.value === "Budget" ? (
+                <>
+                <BasicDatePicker label="From... " value={fromDate} selected={fromDate} onChange={date => setFromDate(date)} />
+                <BasicDatePicker label="To..." value={toDate} selected={toDate} onChange={date => setToDate(date)} />
+                </>
+              ) : ( <BasicDatePicker label="Choose date" value={selectedDate} selected={selectedDate} onChange={date => setSelectedDate(date)} />)}
+              <CategoryPicker name="category" value={category} onChange={e => setCategory(e.target.value)} />
+              <CategoryPicker name="account" value={account} onChange={e => setAccount(e.target.value)} />
             </StyledEngineProvider>
           </Pickers>
           
         </DialogContent>
         <DialogActions>
           <Button fullWidth={true} onClick={handleClose}>Cancel</Button>
-          <Button fullWidth={true} variant="contained" onClick={ () => handleAdd(props.clickAction, amount) }>Add {props.value}</Button>
+          <Button fullWidth={true} variant="contained" 
+            disabled={(amount && category && account && descr && (selectedDate || (fromDate && toDate))) 
+            ? false : true} onClick={ () => handleAdd(props.value) }>Add {props.value}</Button>
         </DialogActions>
       </Dialog>
     </div>
   );
+
 }
 
 const Pickers = styled.div`

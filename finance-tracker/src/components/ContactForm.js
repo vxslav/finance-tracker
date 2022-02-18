@@ -9,13 +9,15 @@ import DialogTitle from '@mui/material/DialogTitle';
 import SendIcon from '@mui/icons-material/Send';
 import styled from 'styled-components';
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { setSnackbar } from '../redux/actions/snackbarActions';
 
 export default function FormDialog() {
   const [open, setOpen] = useState(false);
-  const [isSent, setIsSent] = useState(false);
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
-  
+  const dispatch = useDispatch();
+
   const handleInput = (e) => {
     if(e.target.name === "email") {
       setEmail(e.target.value.trim());
@@ -28,12 +30,11 @@ export default function FormDialog() {
   };
   const handleClose = () => {
     setOpen(false);
-    setIsSent(false);
   };
   const handleSend = () => {
+    dispatch(setSnackbar(true, "success", "Message sent!"))
     setEmail("");
     setMessage("");
-    setIsSent(true);
   };
   return (
     <div>
@@ -85,9 +86,6 @@ export default function FormDialog() {
               Send
           </Button>
         </DialogActions>
-        {isSent && (
-          <Success>Thank you for your time! We'll get back to you soon!</Success>
-        )}
       </Dialog>
     </div>
   );

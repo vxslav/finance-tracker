@@ -5,6 +5,7 @@ import AboutUsPage from "./components/AboutUsPage";
 import LoginPage from "./components/LoginPage";
 import RegisterPage from "./components/RegisterPage";
 import ProfilePage from "./components/ProfilePage";
+import Snackbar from './components/Snackbar';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './main.css';
 
@@ -12,6 +13,7 @@ function App() {
   return (
     <>
         <Header />
+        <Snackbar />
         <Routes>
             <Route path="/home" element={<HomePage />}/>
             <Route path="/login" element={<LoginPage />}/>
