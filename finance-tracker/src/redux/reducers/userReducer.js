@@ -10,7 +10,7 @@ const INITIAL_STATE = {
         firstName : 'Viktoria',
         lastName : "Slavkova",
         email : 'vx.slavkova@gmail.com',
-        birthdate : '26/09/1994',
+        birthdate : '03/18/1994',
         incomes : incomeArr,
         expenses : expenseArr,
         budgets : budgetArr,
@@ -29,15 +29,7 @@ export const userReducer = (state = INITIAL_STATE, action) => {
                 ...state,
                 logged : true,
                 user : {
-                    firstName : action.payload.firstName,
-                    lastName : action.payload.lastName,
-                    email : action.payload.email,
-                    birthdate : action.payload.birthdate,
-                    incomes : action.payload.incomes,
-                    expenses : action.payload.expenses,
-                    goals : action.payload.goals,
-                    total : action.payload.total,
-                    startBudget : action.payload.startBudget
+                    ...action.payload
                 }
             }
         case LOGOUT : 

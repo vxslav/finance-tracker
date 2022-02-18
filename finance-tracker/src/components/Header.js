@@ -1,9 +1,7 @@
 import { Link } from "react-router-dom";
 import styles from "./styles/nav.module.css";
 import styled from 'styled-components';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { useEffect, useState } from "react";
-import Form from './ContactForm';
 
 export default function Header(){
     useEffect(() => {
@@ -14,15 +12,8 @@ export default function Header(){
     }, []);
     const [navStatusOpen, setNavStatusOpen] = useState(false);
     const [screenSize, setScreenSize] = useState("large");
-    const [accountText, setAccountText] = useState(false);
     const handleHeaderOnResize = () => {
         setScreenSize(window.innerWidth);
-        if(window.innerWidth < 768) {
-            setAccountText(true);
-        }
-        else{
-            setAccountText(false);
-        }
     }
 
     const handleClick = () => {
@@ -34,16 +25,18 @@ export default function Header(){
     return (
         <StyledHeader status={navStatusOpen}>
             <Logo src="logo.png" onClick={handleClick} />
-            <Link className={styles.btn} to="/home">Home</Link>
+
             <Link className={styles.btn} to="/about">About us</Link>
             <Link className={styles.btn} to="/login">Login</Link>
             <Link className={styles.btn} to="/register">Register</Link>
-            <div className={styles.profileIcon}>
-                <Link className={styles.btn} to="/profile">
-                    {accountText ? "Account" : <AccountCircleIcon fontSize="large" />}
-                </Link>
-            </div>
-                
+            
+            <Link className={styles.btn} to="/home">Home</Link>
+            <Link className={styles.btn} to="/profile"> My Profile </Link>   
+            <Link className={styles.btn} to="/categories"> Categories </Link>  
+            <Link className={styles.btn} to="/budgets"> Budgets </Link>  
+            <Link className={styles.btn} to="/history"> History </Link>  
+            <Link className={styles.btn} to="/reports"> Reports </Link>  
+            <Link className={styles.btn} to="/accounts"> Accounts </Link>  
             <Link className={styles.btn} to="/">Logout</Link>
         </StyledHeader>
     );
