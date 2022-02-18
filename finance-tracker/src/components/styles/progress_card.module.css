@@ -30,3 +30,13 @@
     justify-content: space-evenly;
     margin-top: 40px;
 }
+
+.btn{
+    width: 200px;
+}
+
+@media (max-width: 545px) {
+    .btn{
+        width: 124px;
+    }
+}
