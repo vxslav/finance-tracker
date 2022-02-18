@@ -77,6 +77,7 @@ export default function LoginPage(){
                             name="loginEmail" 
                             variant="outlined" 
                             onInput={(e) => handleInput(e)}/>
+                            
                         <TextField 
                             fullWidth 
                             id="outlined-password-input" 
@@ -85,6 +86,7 @@ export default function LoginPage(){
                             type="password" 
                             autoComplete="current-password"
                             onInput={(e) => handleInput(e)}/>
+                            
                     </div>
                     <div className={styles.btnCheckContainer}>
                         <FormControlLabel control={<Checkbox checked={rememberMe} onChange={handleChange}/>} label="Remember me" />

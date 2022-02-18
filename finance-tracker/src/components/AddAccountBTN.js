@@ -7,7 +7,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
-export default function FormDialog() {
+export default function AddAccountBTN() {
   const [open, setOpen] = React.useState(false);
   const [accountInfo, setAccountInfo] = React.useState({name: "", amount: ""});
 
@@ -27,16 +27,15 @@ export default function FormDialog() {
 
   const handleChange = (ev) => {
     setAccountInfo(prevInfo => ({...prevInfo, [ev.target.name]: ev.target.value}));
-    console.log(accountInfo);
   }
 
   return (
     <div>
       <Button variant="outlined" onClick={handleClickOpen}>
-        Open form dialog
+        Add Account
       </Button>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Subscribe</DialogTitle>
+        <DialogTitle>Add Account</DialogTitle>
         <DialogContent>
           <DialogContentText>
             Enter name and start wage for the account you want to add!
