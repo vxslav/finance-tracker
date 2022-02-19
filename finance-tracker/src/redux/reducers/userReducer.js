@@ -153,8 +153,9 @@ export const userReducer = (state = INITIAL_STATE, action) => {
                 ...state,
                 user : {
                     ...state.user,
-                    expenseCategories: [action.payload.expenseCategories],
-                    categories: [action.payload.categories]
+                    expenseCategories: action.payload.expenseCategories,
+                    incomeCategories: action.payload.incomeCategories,
+                    categories: action.payload.categories
                 }
             } 
         case EDIT_CATEGORY_INCOME : 
@@ -162,8 +163,9 @@ export const userReducer = (state = INITIAL_STATE, action) => {
                 ...state,
                 user : {
                     ...state.user,
-                    incomeCategories: [action.payload.incomeCategories],
-                    categories: [action.payload.categories]
+                    incomeCategories: action.payload.incomeCategories,
+                    expenseCategories: action.payload.expenseCategories,
+                    categories: action.payload.categories
                 }
             } 
         case CLEAR_GOALS : 

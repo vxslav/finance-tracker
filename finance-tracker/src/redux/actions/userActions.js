@@ -64,9 +64,8 @@ export const addCategoryExpenseAction = (category) => {
 //redux method use to update the current user in firebase
 export const updateUserIncomeCategories = (id, incomeCategories, categories, category) => {
     return async function(dispatch) {
-        
         const userRef = doc(db, "users", id);
-        const newIncomeCategories = {incomeCategories: [...incomeCategories, category], categories: [...categories, category]};
+        const newIncomeCategories = {incomeCategories: [...incomeCategories, category.name], categories: [...categories, category]};
         await updateDoc(userRef, newIncomeCategories);
         dispatch({type: ADD_CATEGORY_INCOME, payload: category});
     }
@@ -81,37 +80,75 @@ export const updateUserExpenseCategories = (id, expenseCategories, categories, c
     }
 } 
 
-export const editExpenseCategories = (id, position, expenseCategories, categories, prevCategory, category) => {
+export const editExpenseCategories = (id, position, expenseCategories, incomeCategories, categories, prevCategory, category, remove) => {
     return async function(dispatch) {
-        
         const userRef = doc(db, "users", id);
-        const newExpenseCategories = expenseCategories.map(el => {
-            if(el === prevCategory){
-                return category.name;
-            }
-            return el;
-        });
+
+        let newExpenseCategories;
+        let newIncomeCategories = [...incomeCategories];
+
+        if(prevCategory.type === "income"){
+            newIncomeCategories = [];
+            incomeCategories.forEach(el => {
+                if(el !== prevCategory.name){
+                    newIncomeCategories.push(el);
+                };
+            });
+            newExpenseCategories = remove ? [...expenseCategories] : [...expenseCategories, category.name];
+        }
+        else{
+            newExpenseCategories = [];
+            expenseCategories.forEach(el => {
+                if(el !== prevCategory.name && !remove){
+                    newExpenseCategories.push(category.name);
+                }
+                else if(el !== prevCategory.name){
+                    newExpenseCategories.push(el);
+                }
+            });
+        }
+
         const newCategories = [...categories];
-        newCategories[position] = category;
-        const newFields = {expenseCategories: newExpenseCategories, categories: newCategories};
+        remove ? newCategories.splice(position, 1) : newCategories[position] = category;
+        const newFields = {expenseCategories: newExpenseCategories, incomeCategories: newIncomeCategories, categories: newCategories};
+
         await updateDoc(userRef, newFields);
         dispatch({type: EDIT_CATEGORY_EXPENSE, payload: newFields});
     }
-} 
+}
 
-export const editIncomeCategories = (id, position, incomeCategories, categories, prevCategory, category) => {
+export const editIncomeCategories = (id, position, expenseCategories, incomeCategories, categories, prevCategory, category, remove) => {
     return async function(dispatch) {
         
         const userRef = doc(db, "users", id);
-        const newIncomeCategories = incomeCategories.map(el => {
-            if(el === prevCategory){
-                return category.name;
-            }
-            return el;
-        });
+
+        let newExpenseCategories = [...expenseCategories];
+        let newIncomeCategories;
+
+        if(prevCategory.type === "expense"){
+            newExpenseCategories = [];
+            expenseCategories.forEach(el => {
+                if(el !== prevCategory.name){
+                    newExpenseCategories.push(el);
+                };
+            });
+            newIncomeCategories = remove ? [...incomeCategories] : [...incomeCategories, category.name];
+        }
+        else{
+            newIncomeCategories = [];
+  
+            incomeCategories.forEach(el => {
+                if(el !== prevCategory.name && !remove){
+                    newIncomeCategories.push(category.name);
+                }
+                else if(el !== prevCategory.name){
+                    newIncomeCategories.push(el);
+                }
+            });
+        }
         const newCategories = [...categories];
-        newCategories[position] = category;
-        const newFields = {incomeCategories: newIncomeCategories, categories: newCategories};
+        remove ? newCategories.splice(position, 1) : newCategories[position] = category;
+        const newFields = {incomeCategories: newIncomeCategories, expenseCategories: newExpenseCategories, categories: newCategories};
         await updateDoc(userRef, newFields);
         dispatch({type: EDIT_CATEGORY_INCOME, payload: newFields});
     }
@@ -122,7 +159,6 @@ export const loginAction = (email) => {
         const usersRef = collection(db, "users");
         const data = await getDocs(usersRef);
         const emailUser = data.docs.map(doc => ({...doc.data(), id: doc.id})).filter(doc => doc.email === email)[0];
-        console.log(emailUser);
         dispatch({type: LOGIN, payload: emailUser});
     }
 } 
