@@ -1,5 +1,8 @@
 import { ADD_EXPENSE, ADD_GOAL, ADD_INCOME, ADD_BUDGET, ADD_CATEGORY_INCOME, ADD_CATEGORY_EXPENSE, CLEAR_GOALS, LOGIN, LOGOUT, EDIT_CATEGORY_EXPENSE, EDIT_CATEGORY_INCOME } from '../actions/userActions';
 import { basicIncomeCategories, basicExpenseCategories } from "../../utils/consts";
+import { incomeArr } from '../mock-data/mock-income';
+import { expenseArr } from '../mock-data/mock-expense';
+import { budgetArr } from '../mock-data/mock-budget';
 
 const INITIAL_STATE = {
     logged: true,
@@ -16,34 +19,56 @@ const INITIAL_STATE = {
         {
             name : "furniture",
             type : "expense"
+        },
+        {
+            name : "Initial Desposit",
+            type : "income"
         }],
         accounts: [
             {
-                name: "main",
+                name: "Main Account",
                 budgets: [],
-                expenses: [],
+                expenses: [
+                    {
+                        date: "2022-01-10T08:57:43.000Z",
+                        amount: "200",
+                        category: { name : "Entertainment", type : "expense"},
+                        descr: "Video player"
+                    },
+                    {
+                        date: "2021-12-29T08:57:43.000Z",
+                        amount: "290",
+                        category: { name : "Books", type : "expense"},
+                        descr: "Sound recorder"
+                    },
+                    {
+                        date: "2022-03-05T08:57:43.000Z",
+                        amount: "1200",
+                        category: { name : "Studies", type : "expense"},
+                        descr: "a funny course"
+                    },
+                ],
                 incomes: [
                     {
                         date: "2022-03-12T08:57:43.000Z",
                         amount: "1200",
                         category: { name : "Initial Desposit", type : "income"},
                         descr: "Initial App Deposit"
-                    }
+                    },
+                    {
+                        date: "2022-01-12T08:57:43.000Z",
+                        amount: "2000",
+                        category: { name : "Salary", type : "income"},
+                        descr: "finally payday"
+                    },
                 ],
                 goals: []
             },
             {
-                name: "schmain",
-                budgets: [],
-                expenses: [],
-                incomes: [
-                    {
-                        date: "2022-02-13T08:57:43.000Z",
-                        amount: "10",
-                        category: { name : "Initial Desposit", type : "income"},
-                        descr: "Initial App Deposit"
-                    }
-                ],
+                name: "Second Account",
+                budgets: budgetArr,
+                expenses: expenseArr,
+                incomes: incomeArr,
                 goals: []
             }
         ],
