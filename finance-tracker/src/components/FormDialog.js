@@ -60,7 +60,8 @@ export default function FormDialog(props) {
             break;
           case "Budget" : {
             let obj = {
-              amount, 
+              amount,
+              descr,
               category,
               account,
               from: fromDate, 
@@ -69,6 +70,7 @@ export default function FormDialog(props) {
             dispatch(addBudgetAction(obj))
           }
       }
+      handleClose();
   };
   const handleInput = (ev) => {
     switch(ev.target.name) {
