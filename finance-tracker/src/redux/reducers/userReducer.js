@@ -7,31 +7,48 @@ import {basicIncomeCategories, basicExpenseCategories} from "../../utils/consts"
 
 const INITIAL_STATE = {
     logged: true,
-    // user : {
-    //     firstName : 'Viktoria',
-    //     lastName : "Slavkova",
-    //     email : 'vx.slavkova@gmail.com',
-    //     birthdate : '03/18/1994',
-    //     incomes : incomeArr,
-    //     expenses : expenseArr,
-    //     budgets : budgetArr,
-    //     goals : [{descr : "Laptop", amount : 800}],
-    //     accounts : account,
-    //     categories : category,
-    //     startBudget : 1200
-    // }
     user : {
         email: "vasko47@abv.bg",
         accounts: [
             {
                 name: "main",
                 budgets: [],
-                categories: [],
+                categories: [1,2,3],
                 expenses: [],
                 incomes: [
                     {
                         date: "2/18/2022",
                         amount: "123",
+                        category: "Initial Deposit",
+                        description: "Initial App Deposit"
+                    }
+                ],
+                goals: []
+            },
+            {
+                name: "sub-zero",
+                budgets: [],
+                categories: ["entertainment", "clothes", "studies"],
+                expenses: [],
+                incomes: [
+                    {
+                        date: "2/18/2022",
+                        amount: "1200",
+                        category: "Initial Deposit",
+                        description: "Initial App Deposit"
+                    }
+                ],
+                goals: []
+            },
+            {
+                name: "schmain",
+                budgets: [],
+                categories: ["swimming", "books", "furniture"],
+                expenses: [],
+                incomes: [
+                    {
+                        date: "2/18/2022",
+                        amount: "10",
                         category: "Initial Deposit",
                         description: "Initial App Deposit"
                     }
