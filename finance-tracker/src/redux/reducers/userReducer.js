@@ -5,6 +5,7 @@ const INITIAL_STATE = {
     logged: true,
     user: {
         email: "vasko47@abv.bg",
+        categories: [],
         accounts: [
             {
                 name: "main",
@@ -96,7 +97,7 @@ const INITIAL_STATE = {
         birthdate: "2001-11-09",
         firstName: "Васил",
         lastName: "Любенов",
-        id: "tWLn6IPOCs2TlzFObTFA"
+        id: "38cQLPYsrIzBBkRnpugS"
     }
 }
 
@@ -183,7 +184,8 @@ export const userReducer = (state = INITIAL_STATE, action) => {
                 ...state,
                 user: {
                     ...state.user,
-                    incomeCategories: [...state.user.incomeCategories, action.payload]
+                    incomeCategories: [...state.user.incomeCategories, action.payload.name],
+                    categories: [...state.user.categories, action.payload]
                 }
             }
         case ADD_CATEGORY_EXPENSE:
@@ -191,11 +193,39 @@ export const userReducer = (state = INITIAL_STATE, action) => {
                 ...state,
                 user: {
                     ...state.user,
-                    expenseCategories: [...state.user.expenseCategories, action.payload]
+                    expenseCategories: [...state.user.expenseCategories, action.payload.name],
+                    categories: [...state.user.categories, action.payload]
                 }
-            }
+            }   
+        case EDIT_CATEGORY_EXPENSE : 
+            return {
+                ...state,
+                user : {
+                    ...state.user,
+                    expenseCategories: [action.payload.expenseCategories],
+                    categories: [action.payload.categories]
+                }
+            } 
 
-        default:
+        case EDIT_CATEGORY_INCOME : 
+            return {
+                ...state,
+                user : {
+                    ...state.user,
+                    incomeCategories: [action.payload.incomeCategories],
+                    categories: [action.payload.categories]
+                }
+            } 
+
+        case CLEAR_GOALS : 
+            return {
+                ...state,
+                user : {
+                    ...state.user,
+                    goals : []
+                }
+            }    
+        default : 
             return state;
     }
 }
