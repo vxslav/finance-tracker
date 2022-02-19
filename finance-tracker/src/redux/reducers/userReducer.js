@@ -1,4 +1,4 @@
-import { ADD_EXPENSE, ADD_GOAL, ADD_INCOME, ADD_BUDGET, ADD_CATEGORY_INCOME, ADD_CATEGORY_EXPENSE, CLEAR_GOALS, LOGIN, LOGOUT } from '../actions/userActions';
+import { ADD_EXPENSE, ADD_GOAL, ADD_INCOME, ADD_BUDGET, ADD_CATEGORY_INCOME, ADD_CATEGORY_EXPENSE, CLEAR_GOALS, LOGIN, LOGOUT, EDIT_CATEGORY_EXPENSE, EDIT_CATEGORY_INCOME } from '../actions/userActions';
 import { incomeArr } from '../mock-data/mock-income';
 import { expenseArr } from '../mock-data/mock-expense';
 import { budgetArr } from '../mock-data/mock-budget';
@@ -9,11 +9,11 @@ const INITIAL_STATE = {
     logged: true,
     user : {
         email: "vasko47@abv.bg",
+        categories: [],
         accounts: [
             {
                 name: "main",
                 budgets: [],
-                categories: [1,2,3],
                 expenses: [],
                 incomes: [
                     {
@@ -28,7 +28,6 @@ const INITIAL_STATE = {
             {
                 name: "sub-zero",
                 budgets: [],
-                categories: ["entertainment", "clothes", "studies"],
                 expenses: [],
                 incomes: [
                     {
@@ -43,7 +42,6 @@ const INITIAL_STATE = {
             {
                 name: "schmain",
                 budgets: [],
-                categories: ["swimming", "books", "furniture"],
                 expenses: [],
                 incomes: [
                     {
@@ -61,7 +59,7 @@ const INITIAL_STATE = {
         birthdate: "2001-11-09",
         firstName: "Васил",
         lastName: "Любенов",
-        id: "tWLn6IPOCs2TlzFObTFA"
+        id: "38cQLPYsrIzBBkRnpugS"
     }
 }
 
@@ -121,7 +119,8 @@ export const userReducer = (state = INITIAL_STATE, action) => {
                 ...state,
                 user : {
                     ...state.user,
-                    incomeCategories: [...state.user.incomeCategories, action.payload]
+                    incomeCategories: [...state.user.incomeCategories, action.payload.name],
+                    categories: [...state.user.categories, action.payload]
                 }
             }
         case ADD_CATEGORY_EXPENSE : 
@@ -129,9 +128,30 @@ export const userReducer = (state = INITIAL_STATE, action) => {
                 ...state,
                 user : {
                     ...state.user,
-                    expenseCategories: [...state.user.expenseCategories, action.payload]
+                    expenseCategories: [...state.user.expenseCategories, action.payload.name],
+                    categories: [...state.user.categories, action.payload]
                 }
             }   
+        case EDIT_CATEGORY_EXPENSE : 
+            return {
+                ...state,
+                user : {
+                    ...state.user,
+                    expenseCategories: [action.payload.expenseCategories],
+                    categories: [action.payload.categories]
+                }
+            } 
+
+        case EDIT_CATEGORY_INCOME : 
+            return {
+                ...state,
+                user : {
+                    ...state.user,
+                    incomeCategories: [action.payload.incomeCategories],
+                    categories: [action.payload.categories]
+                }
+            } 
+
         case CLEAR_GOALS : 
             return {
                 ...state,
