@@ -48,28 +48,30 @@ export default function FormDialog(props) {
       date: selectedDate,
       account
     }
-      switch(value) {
-          case "Expense" :
-            dispatch(addExpenseAction(obj))
-            break;
-          case "Savings": 
-            dispatch(addGoalAction(obj))
-            break;
-          case "Income" : 
-            dispatch(addIncomeAction(obj))
-            break;
-          case "Budget" : {
-            let obj = {
-              amount, 
-              category,
-              account,
-              from: fromDate, 
-              to: toDate
-            }
-            dispatch(addBudgetAction(obj))
+
+    switch(value) {
+        case "Expense" :
+          dispatch(addExpenseAction(obj))
+          break;
+        case "Savings": 
+          dispatch(addGoalAction(obj))
+          break;
+        case "Income" : 
+          dispatch(addIncomeAction(obj))
+          break;
+        case "Budget" : {
+          let obj = {
+            amount, 
+            category,
+            account,
+            from: fromDate, 
+            to: toDate
           }
-      }
+          dispatch(addBudgetAction(obj))
+        }
+    }
   };
+
   const handleInput = (ev) => {
     switch(ev.target.name) {
       case "amount": 
@@ -125,7 +127,7 @@ export default function FormDialog(props) {
                 </>
               ) : ( <BasicDatePicker label="Choose date" value={selectedDate} selected={selectedDate} onChange={date => setSelectedDate(date)} />)}
               <CategoryPicker name="account" value={account} onChange={e => setAccount(e.target.value)} required/>
-              <CategoryPicker name="category" value={category} list={account} disabled={account ? false : true} onChange={e => setCategory(e.target.value)} />
+              <CategoryPicker name="category" value={category} list={account} disabled={account ? false : true} type={props.value} onChange={e => setCategory(e.target.value)} />
               
             </StyledEngineProvider>
           </Pickers>
@@ -134,8 +136,9 @@ export default function FormDialog(props) {
         <DialogActions>
           <Button fullWidth={true} onClick={handleClose}>Cancel</Button>
           <Button fullWidth={true} variant="contained" 
-            disabled={(amount && category && account && descr && (selectedDate || (fromDate && toDate))) 
-            ? false : true} onClick={ () => handleAdd(props.value) }>Add {props.value}</Button>
+            disabled={!((amount && category && account && descr && (selectedDate || (fromDate && toDate)))) } 
+            onClick={ () => handleAdd(props.value) }>Add {props.value}
+          </Button>
         </DialogActions>
       </Dialog>
     </div>
