@@ -40,10 +40,10 @@ export default function AddCategoryBTN(props) {
     }
     else{
       if(value === "expense") {
-        dispatch(editExpenseCategories(user.id, props.position, user.expenseCategories, user.incomeCategories, user.categories, user.categories[props.position], categoryInfo));
+        dispatch(editExpenseCategories(user.id, props.position, user.expenseCategories, user.incomeCategories, user.categories, user.categories[props.position], categoryInfo, false));
       }
       else {
-        dispatch(editIncomeCategories(user.id, props.position, user.expenseCategories, user.incomeCategories, user.categories, user.categories[props.position], categoryInfo));
+        dispatch(editIncomeCategories(user.id, props.position, user.expenseCategories, user.incomeCategories, user.categories, user.categories[props.position], categoryInfo, false));
       }
     }
 

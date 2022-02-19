@@ -80,7 +80,7 @@ export const updateUserExpenseCategories = (id, expenseCategories, categories, c
     }
 } 
 
-export const editExpenseCategories = (id, position, expenseCategories, incomeCategories, categories, prevCategory, category) => {
+export const editExpenseCategories = (id, position, expenseCategories, incomeCategories, categories, prevCategory, category, remove) => {
     return async function(dispatch) {
         const userRef = doc(db, "users", id);
 
@@ -94,29 +94,30 @@ export const editExpenseCategories = (id, position, expenseCategories, incomeCat
                     newIncomeCategories.push(el);
                 };
             });
-            newExpenseCategories = [...expenseCategories, category.name];
+            newExpenseCategories = remove ? [...expenseCategories] : [...expenseCategories, category.name];
         }
         else{
-            newExpenseCategories = expenseCategories.map(el => {
-                if(el === prevCategory.name){
-                    return category.name;
+            newExpenseCategories = [];
+            expenseCategories.forEach(el => {
+                if(el !== prevCategory.name && !remove){
+                    newExpenseCategories.push(category.name);
                 }
-                return el;
+                else if(el !== prevCategory.name){
+                    newExpenseCategories.push(el);
+                }
             });
         }
 
-    
         const newCategories = [...categories];
-        newCategories[position] = category;
-     
+        remove ? newCategories.splice(position, 1) : newCategories[position] = category;
         const newFields = {expenseCategories: newExpenseCategories, incomeCategories: newIncomeCategories, categories: newCategories};
 
         await updateDoc(userRef, newFields);
         dispatch({type: EDIT_CATEGORY_EXPENSE, payload: newFields});
     }
-} 
+}
 
-export const editIncomeCategories = (id, position, expenseCategories, incomeCategories, categories, prevCategory, category) => {
+export const editIncomeCategories = (id, position, expenseCategories, incomeCategories, categories, prevCategory, category, remove) => {
     return async function(dispatch) {
         
         const userRef = doc(db, "users", id);
@@ -131,20 +132,23 @@ export const editIncomeCategories = (id, position, expenseCategories, incomeCate
                     newExpenseCategories.push(el);
                 };
             });
-            newIncomeCategories = [...incomeCategories, category.name];
+            newIncomeCategories = remove ? [...incomeCategories] : [...incomeCategories, category.name];
         }
         else{
-            newIncomeCategories = incomeCategories.map(el => {
-                if(el === prevCategory.name){
-                    return category.name;
+            newIncomeCategories = [];
+  
+            incomeCategories.forEach(el => {
+                if(el !== prevCategory.name && !remove){
+                    newIncomeCategories.push(category.name);
                 }
-                return el;
+                else if(el !== prevCategory.name){
+                    newIncomeCategories.push(el);
+                }
             });
         }
         const newCategories = [...categories];
-        newCategories[position] = category;
+        remove ? newCategories.splice(position, 1) : newCategories[position] = category;
         const newFields = {incomeCategories: newIncomeCategories, expenseCategories: newExpenseCategories, categories: newCategories};
-
         await updateDoc(userRef, newFields);
         dispatch({type: EDIT_CATEGORY_INCOME, payload: newFields});
     }
@@ -155,7 +159,6 @@ export const loginAction = (email) => {
         const usersRef = collection(db, "users");
         const data = await getDocs(usersRef);
         const emailUser = data.docs.map(doc => ({...doc.data(), id: doc.id})).filter(doc => doc.email === email)[0];
-        console.log(emailUser);
         dispatch({type: LOGIN, payload: emailUser});
     }
 } 
