@@ -1,8 +1,17 @@
-import { ADD_EXPENSE, ADD_GOAL, ADD_INCOME, ADD_BUDGET, ADD_CATEGORY_INCOME, ADD_CATEGORY_EXPENSE, CLEAR_GOALS, LOGIN, LOGOUT, EDIT_CATEGORY_EXPENSE, EDIT_CATEGORY_INCOME } from '../actions/userActions';
-import { incomeArr } from '../mock-data/mock-income';
-import { expenseArr } from '../mock-data/mock-expense';
-import { budgetArr } from '../mock-data/mock-budget';
-import { account, category } from '../mock-data/mock-accounts-categories';
+import { ADD_EXPENSE,
+    ADD_GOAL,
+    ADD_INCOME,
+    ADD_BUDGET,
+    ADD_CATEGORY_INCOME,
+    ADD_CATEGORY_EXPENSE,
+    CLEAR_GOALS,
+    LOGIN,
+    LOGOUT,
+    EDIT_CATEGORY_EXPENSE,
+    EDIT_CATEGORY_INCOME,
+    UPDATE_ACCOUNTS,
+    EDIT_ACCOUNT
+} from '../actions/userActions';
 import {basicIncomeCategories, basicExpenseCategories} from "../../utils/consts";
 
 const INITIAL_STATE = {
@@ -153,6 +162,23 @@ export const userReducer = (state = INITIAL_STATE, action) => {
                     categories: action.payload.categories
                 }
             } 
+        case UPDATE_ACCOUNTS : 
+            return {
+                ...state,
+                user : {
+                    ...state.user,
+                    accounts: [...action.payload]
+                }
+            } 
+
+        case EDIT_ACCOUNT:
+            return {
+                ...state,
+                user : {
+                    ...state.user,
+                    accounts: [...action.payload]
+                }
+            }
 
         case CLEAR_GOALS : 
             return {

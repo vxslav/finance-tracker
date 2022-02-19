@@ -10,10 +10,11 @@ import Alert from '@mui/material/Alert';
 import { auth } from "../firebase";
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { db } from "../firebase";
-import { getDocs, addDoc, updateDoc, deleteDoc, doc, collection } from "firebase/firestore";
+import { addDoc, collection } from "firebase/firestore";
 import { useDispatch } from 'react-redux';
 import { setSnackbar } from '../redux/actions/snackbarActions';
 import { basicIncomeCategories, basicExpenseCategories } from "../utils/consts";
+import getCurrentDate from "../util";
 
 export default function RegisterPage(){
     const dispatch = useDispatch();
@@ -31,8 +32,7 @@ export default function RegisterPage(){
     const usersCollectionRef = collection(db, "users");
 
     const createUser = async () => {
-        const today = new Date();
-        const date = `${(today.getMonth()+1)}/${today.getDate()}/${today.getFullYear()}`;
+        const date = getCurrentDate();
         //init a new User with his coresponding data
         await addDoc(usersCollectionRef, { firstName: userData.firstName,
                                             lastName: userData.lastName,
@@ -44,12 +44,6 @@ export default function RegisterPage(){
                                             accounts: [{name: "main", incomes: [{category: "Initial Deposit", date: date, description: "Initial App Deposit", amount: userData.startBudget}],
                                             expenses: [], goals: [], budgets: []}],
                                             });
-    };
-
-    const updateUser = async (id, age) => {
-        // const userDoc = doc(db, "users", id);
-        // const newFields = { age: age + 1 };
-        // await updateDoc(userDoc, newFields);
     };
 
     const handleInput = e => {
@@ -71,7 +65,6 @@ export default function RegisterPage(){
             createUserWithEmailAndPassword(auth, userData.email, userData.pass)
             .then((userCredential) => {
                 try{
-                    const user = userCredential.user;
                     createUser();
                     navigate("/home");
                     dispatch(setSnackbar(true, "success", "Registration successfull!"))
@@ -116,7 +109,7 @@ export default function RegisterPage(){
     }, []);
 
     const isFilled = () => {
-        return (userData.firstName && userData.lastName && userData.email && userData.pass && userData.confirm && userData.birthdate && userData.startBudget && userData.startBudget != 0);
+        return (userData.firstName && userData.lastName && userData.email && userData.pass && userData.confirm && userData.birthdate && userData.startBudget && userData.startBudget !== "0");
     }
 
     return (

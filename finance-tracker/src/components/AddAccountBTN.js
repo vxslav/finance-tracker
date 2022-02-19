@@ -6,11 +6,14 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { addAccountAction, editAccountAction } from '../redux/actions/userActions';
 
-export default function AddAccountBTN() {
+export default function AddAccountBTN(props) {
   const [open, setOpen] = React.useState(false);
   const [accountInfo, setAccountInfo] = React.useState({name: "", amount: ""});
+
+  const dispatch = useDispatch();
 
   const user = useSelector(state => state.userData.user);
 
@@ -23,22 +26,17 @@ export default function AddAccountBTN() {
   };
 
   const handleAdd = () => {
-    const today = new Date();
-    const date = `${(today.getMonth()+1)}/${today.getDate()}/${today.getFullYear()}`;
-    user.accounts.push({name: accountInfo.name,
-                        budgets: [],
-                        categories: [1,2,3],
-                        expenses: [],
-                        incomes: [
-                            {
-                                date: date,
-                                amount: accountInfo.amount,
-                                category: "Initial Deposit",
-                                description: `Initial "${accountInfo.name}" Deposit`
-                            }
-                        ],
-                        goals: []
-    });
+    dispatch(addAccountAction(user.id, accountInfo.name, accountInfo.amount, user.accounts))
+    
+    setAccountInfo({name: "", amount: ""});
+    setOpen(false);
+  }
+
+  const handleEdit = () => {
+
+    //use redux to update the account
+    dispatch(editAccountAction(user.id, props.name, accountInfo.name, user.accounts));
+
     setAccountInfo({name: "", amount: ""});
     setOpen(false);
   }
@@ -50,13 +48,13 @@ export default function AddAccountBTN() {
   return (
     <div>
       <Button variant="outlined" onClick={handleClickOpen}>
-        Add Account
+        {props.operation === "edit" ? "Edit" : "Add"} Account
       </Button>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Add Account</DialogTitle>
+        <DialogTitle> {props.operation === "edit" ? "Edit" : "Add"} Account</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Enter name and start wage for the account you want to add!
+            Enter name and start wage for the account you want to {props.operation === "edit" ? "edit" : "add"}!
           </DialogContentText>
           <TextField
             autoFocus
@@ -71,7 +69,7 @@ export default function AddAccountBTN() {
             onChange={handleChange}
           />
           <br/>
-          <TextField
+          {props.operation !== "edit" && <TextField
             autoFocus
             margin="dense"
             id="accWage"
@@ -82,11 +80,11 @@ export default function AddAccountBTN() {
             variant="standard"
             value={accountInfo.amount}
             onChange={handleChange}
-          />
+          />}
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}> Cancel </Button>
-          <Button onClick={handleAdd}> Add Account </Button>
+          <Button onClick={props.operation === "edit" ? handleEdit : handleAdd}>  {props.operation === "edit" ? "Edit" : "Add"} Account </Button>
         </DialogActions>
       </Dialog>
     </div>
