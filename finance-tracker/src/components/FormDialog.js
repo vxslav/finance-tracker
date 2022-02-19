@@ -28,9 +28,11 @@ export default function FormDialog(props) {
   const [account, setAccount] = useState("");
   const dispatch = useDispatch();
   const user = useSelector(state => state.userData.user);
+
   const handleClickOpen = () => {
     setOpen(true);
   };
+
   const handleClose = () => {
     setAmount(0);
     setDescr("");
@@ -41,6 +43,7 @@ export default function FormDialog(props) {
     setToDate(null);
     setOpen(false);
   };
+
   const handleAdd = (value) => {
     dispatch(setSnackbar(true, "success", "Transaction added!"))
     let details = {
@@ -53,18 +56,17 @@ export default function FormDialog(props) {
 
     switch(value) {
         case "Expense" :
-          try{
-            dispatch(addExpense(user, details))
-          }catch(err){
-            console.log(err);
-          }
+          dispatch(addExpense(user, details))
           break;
+
         case "Savings": 
           dispatch(addGoalAction(user, details))
           break;
+
         case "Income" : 
           dispatch(addIncome(user, details))
           break;
+
         case "Budget" : {
           let details = {
             amount, 
@@ -88,6 +90,52 @@ export default function FormDialog(props) {
     handleClose();
   };
 
+  const handleEdit = () => {
+    dispatch(setSnackbar(true, "success", "Transaction updated!"))
+    let details = {
+      amount,
+      descr,
+      category,
+      date: getFormatedDate(selectedDate),
+      account
+    }
+
+    switch(value) {
+        case "Expense" :
+          dispatch(editExpense(user, details))
+          break;
+
+        case "Savings": 
+          dispatch(editGoalAction(user, details))
+          break;
+
+        case "Income" : 
+          dispatch(editIncome(user, details))
+          break;
+
+        case "Budget" : {
+          let details = {
+            amount, 
+            category,
+            account,
+            from: fromDate, 
+            to: toDate
+          }
+          try{
+            dispatch(editBudgetAction(details))
+          }
+          catch(err){
+            console.log(err);
+          }
+        }
+        break;
+        default: {
+          return;
+        }
+    }
+    handleClose();
+  }
+
   const handleInput = (ev) => {
     switch(ev.target.name) {
       case "amount": 
@@ -105,10 +153,10 @@ export default function FormDialog(props) {
   return (
     <div>
       <Button className={styles.btn} variant="outlined" onClick={handleClickOpen}>
-        {props.title}
+        {props.operation === "edit" ? "Edit" : "Add"} {props.value}
       </Button>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>{props.title}</DialogTitle>
+        <DialogTitle>{props.operation === "edit" ? "Edit" : "Add"} {props.value}</DialogTitle>
         <DialogContent>
           <TextField
             autoFocus
@@ -156,7 +204,7 @@ export default function FormDialog(props) {
           <Button fullWidth={true} onClick={handleClose}>Cancel</Button>
           <Button fullWidth={true} variant="contained" 
             disabled={!((amount && category && account && descr && (selectedDate || (fromDate && toDate)))) } 
-            onClick={ () => handleAdd(props.value) }>Add {props.value}
+            onClick={ props.operation === "edit" ? () => handleEdit() : () => handleAdd(props.value) }> {props.operation === "edit" ? "Edit" : "Add"} {props.value}
           </Button>
         </DialogActions>
       </Dialog>
