@@ -10,7 +10,7 @@ import { StyledEngineProvider } from '@mui/material/styles';
 import CategoryPicker from "./CategoryPicker";
 import styled from 'styled-components';
 import { useState} from 'react';
-import { addGoalAction, addBudgetAction, addIncome, addExpense } from '../redux/actions/userActions';
+import { addGoalAction, addBudgetAction, addIncome, addExpense, editExpense, editIncome } from '../redux/actions/userActions';
 import { useDispatch, useSelector } from 'react-redux';
 import { setSnackbar } from '../redux/actions/snackbarActions';
 import styles from "./styles/progress_card.module.css";
@@ -90,7 +90,7 @@ export default function FormDialog(props) {
     handleClose();
   };
 
-  const handleEdit = () => {
+  const handleEdit = (value) => {
     dispatch(setSnackbar(true, "success", "Transaction updated!"))
     let details = {
       amount,
@@ -102,15 +102,15 @@ export default function FormDialog(props) {
 
     switch(value) {
         case "Expense" :
-          dispatch(editExpense(user, details))
+          dispatch(editExpense(user, details, props.prevAccountName, props.expenseID))
           break;
 
         case "Savings": 
-          dispatch(editGoalAction(user, details))
+          // dispatch(editGoalAction(user, details))
           break;
 
         case "Income" : 
-          dispatch(editIncome(user, details))
+          dispatch(editIncome(user, details, props.prevAccountName, props.incomeID))
           break;
 
         case "Budget" : {
@@ -122,7 +122,7 @@ export default function FormDialog(props) {
             to: toDate
           }
           try{
-            dispatch(editBudgetAction(details))
+            // dispatch(editBudgetAction(details))
           }
           catch(err){
             console.log(err);
@@ -204,7 +204,7 @@ export default function FormDialog(props) {
           <Button fullWidth={true} onClick={handleClose}>Cancel</Button>
           <Button fullWidth={true} variant="contained" 
             disabled={!((amount && category && account && descr && (selectedDate || (fromDate && toDate)))) } 
-            onClick={ props.operation === "edit" ? () => handleEdit() : () => handleAdd(props.value) }> {props.operation === "edit" ? "Edit" : "Add"} {props.value}
+            onClick={ props.operation === "edit" ? () => handleEdit(props.value) : () => handleAdd(props.value) }> {props.operation === "edit" ? "Edit" : "Add"} {props.value}
           </Button>
         </DialogActions>
       </Dialog>
