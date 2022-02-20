@@ -1,6 +1,9 @@
 import { db } from '../../firebase';
 import { collection, getDocs, updateDoc, doc } from "firebase/firestore"; 
-import { useSelector } from 'react-redux';
+import { getDate } from "../../util";
+import { useReducer } from 'react';
+import { accordionDetailsClasses } from '@mui/material';
+
 
 export const LOGIN = "LOGIN";
 export const LOGOUT = "LOGOUT";
@@ -14,6 +17,11 @@ export const ADD_CATEGORY_INCOME = "ADD_CATEGORY_INCOME";
 export const ADD_CATEGORY_EXPENSE = "ADD_CATEGORY_EXPENSE";
 export const EDIT_CATEGORY_EXPENSE = "EDIT_CATEGORY_EXPENSE";
 export const EDIT_CATEGORY_INCOME = "EDIT_CATEGORY_INCOME";
+export const UPDATE_ACCOUNTS = "UPDATE_ACCOUNTS";
+export const EDIT_ACCOUNT = "EDIT_ACCOUNT";
+export const REMOVE_ACCOUNT = "REMOVE_ACCOUNT";
+export const EDIT_INCOME = "EDIT_INCOME";
+export const EDIT_EXPENSE = "EDIT_EXPENSE";
 
 export const logoutAction = {
     type: LOGOUT
@@ -160,5 +168,129 @@ export const loginAction = (email) => {
         const data = await getDocs(usersRef);
         const emailUser = data.docs.map(doc => ({...doc.data(), id: doc.id})).filter(doc => doc.email === email)[0];
         dispatch({type: LOGIN, payload: emailUser});
+    }
+} 
+
+export const addAccountAction = (id, name, amount, accounts) => {
+    const date = getDate();
+    return async function(dispatch) {
+        const userRef = doc(db, "users", id);
+        const newFields = {accounts: [...accounts,
+            {
+                name: name,
+                incomes: [{category: "Initial Deposit", date: date, description: "Initial Account Deposit", amount: amount}],
+                budgets: [],
+                expenses: [],
+                goals: []
+            }]}
+
+        await updateDoc(userRef, newFields);
+        dispatch({type: UPDATE_ACCOUNTS, payload: newFields.accounts});
+    }
+} 
+
+export const editAccountAction = (id, prevName, newName, accounts) => {
+    return async function(dispatch) {
+        const userRef = doc(db, "users", id);
+
+        const newAccounts = accounts.map(el => {
+            if(el.name === prevName){
+                return {
+                    ...el,
+                    name: newName
+                }
+            }
+            return el;
+        })
+
+        const newFields = {accounts: newAccounts};
+    
+        await updateDoc(userRef, newFields);
+        dispatch({type: EDIT_ACCOUNT, payload: newFields.accounts});
+    }
+} 
+
+export const removeAccountAction = (id, prevName, accounts) => {
+    return async function(dispatch) {
+        const userRef = doc(db, "users", id);
+
+        const newAccounts = [];
+
+        accounts.forEach(el => {
+            if(el.name !== prevName){
+                newAccounts.push(el);
+            }
+        });
+
+        const newFields = {accounts: newAccounts};
+    
+        await updateDoc(userRef, newFields);
+        dispatch({type: EDIT_ACCOUNT, payload: newFields.accounts});
+    }
+} 
+
+export const addExpense = (user, details) => {
+    return async function(dispatch) {
+        const userRef = doc(db, "users", user.id);
+        const newField = user.accounts;
+        let br = 0;
+        newField.forEach(acc => {
+            if(acc.name === details.account){
+                const newExpenses = [...acc.expenses, {date: details.date,
+                                amount: details.amount,
+                                category: details.category,
+                                description: details.descr
+                }];
+                newField[br] = {...newField[br], expenses: newExpenses};
+            }
+            br++;
+        });
+
+        await updateDoc(userRef, {accounts: newField});
+        dispatch({type: ADD_EXPENSE, payload: newField});
+    }
+} 
+
+export const addIncome = (user, details) => {
+    return async function(dispatch) {
+        const userRef = doc(db, "users", user.id);
+        const newField = user.accounts;
+        let br = 0;
+        newField.forEach(acc => {
+            if(acc.name === details.account){
+                const newIncomes = [...acc.incomes, {date: details.date,
+                                amount: details.amount,
+                                category: details.category,
+                                description: details.descr
+                }];
+                newField[br] = {...newField[br], incomes: newIncomes};
+            }
+            br++;
+        });
+
+        await updateDoc(userRef, {accounts: newField});
+        dispatch({type: ADD_INCOME, payload: newField});
+    }
+} 
+
+export const editIncome = (user, details) => {
+    // todo()!;
+    return async function(dispatch) {
+        // const userRef = doc(db, "users", user.id);
+        // const newField = user.accounts;
+    
+        // await updateDoc(userRef, {accounts: newField});
+        // dispatch({type: EDIT_INCOME, payload: newField});
+    }
+} 
+
+export const editExpenses = (user, details) => {
+    // todo()!;
+    return async function(dispatch) {
+        // const userRef = doc(db, "users", user.id);
+        // const newField = user.accounts;
+    
+        // await updateDoc(userRef, {accounts: newField});
+        // dispatch({type: EDIT_EXPENSE, payload: newField});
     }
 } 

@@ -9,3 +9,9 @@
     justify-content: center;
     column-gap: 50px;
 }
+
+.accountName {
+    background-color : #0267CD20;
+    text-transform: uppercase;
+    font-weight: 600;
+}

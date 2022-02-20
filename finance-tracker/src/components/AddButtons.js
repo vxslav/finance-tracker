@@ -3,13 +3,12 @@ import styled from "styled-components";
 import { StyledEngineProvider } from '@mui/material/styles';
 import FormDialog from "./FormDialog";
 
-export default function AddButtons() {
+export default function AddButtons(props) {
     return (
         <ButtonsWrapper>
             <StyledEngineProvider injectFirst>
-                <FormDialog value="Expense" title="Add an expense"/>
-                <FormDialog value="Income" title="Add an income" />
-                <FormDialog value="Budget" title="Add Budget"/>
+                <FormDialog operation={props.operation} value="Expense" title="Add an expense"/>
+                <FormDialog operation={props.operation} value="Income" title="Add an income" />
             </StyledEngineProvider>
         </ButtonsWrapper>
     )

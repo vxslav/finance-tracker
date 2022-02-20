@@ -1,29 +1,28 @@
-import { ADD_EXPENSE, ADD_GOAL, ADD_INCOME, ADD_BUDGET, ADD_CATEGORY_INCOME, ADD_CATEGORY_EXPENSE, CLEAR_GOALS, LOGIN, LOGOUT, EDIT_CATEGORY_EXPENSE, EDIT_CATEGORY_INCOME } from '../actions/userActions';
 import { basicIncomeCategories, basicExpenseCategories } from "../../utils/consts";
 import { incomeArr } from '../mock-data/mock-income';
 import { expenseArr } from '../mock-data/mock-expense';
 import { budgetArr } from '../mock-data/mock-budget';
-
+import { ADD_EXPENSE,
+    ADD_GOAL,
+    ADD_INCOME,
+    ADD_BUDGET,
+    ADD_CATEGORY_INCOME,
+    ADD_CATEGORY_EXPENSE,
+    CLEAR_GOALS,
+    LOGIN,
+    LOGOUT,
+    EDIT_CATEGORY_EXPENSE,
+    EDIT_CATEGORY_INCOME,
+    UPDATE_ACCOUNTS,
+    EDIT_ACCOUNT,
+    EDIT_INCOME,
+    EDIT_EXPENSE
+} from '../actions/userActions';
 const INITIAL_STATE = {
     logged: true,
     user: {
         email: "vasko47@abv.bg",
-        categories: [{
-            name : "swimming",
-            type: "expense"
-        },
-        {
-            name : "books",
-            type : "expense"
-        },
-        {
-            name : "furniture",
-            type : "expense"
-        },
-        {
-            name : "Initial Desposit",
-            type : "income"
-        }],
+        categories : [],
         accounts: [
             {
                 name: "Main Account",
@@ -32,19 +31,19 @@ const INITIAL_STATE = {
                     {
                         date: "2022-01-10T08:57:43.000Z",
                         amount: "200",
-                        category: { name : "Entertainment", type : "expense"},
+                        category: "Entertainment",
                         descr: "Video player"
                     },
                     {
                         date: "2021-12-29T08:57:43.000Z",
                         amount: "290",
-                        category: { name : "Books", type : "expense"},
+                        category: "Books",
                         descr: "Sound recorder"
                     },
                     {
                         date: "2022-03-05T08:57:43.000Z",
                         amount: "1200",
-                        category: { name : "Studies", type : "expense"},
+                        category: "Studies",
                         descr: "a funny course"
                     },
                 ],
@@ -52,13 +51,13 @@ const INITIAL_STATE = {
                     {
                         date: "2022-03-12T08:57:43.000Z",
                         amount: "1200",
-                        category: { name : "Initial Desposit", type : "income"},
+                        category:"Initial Desposit",
                         descr: "Initial App Deposit"
                     },
                     {
                         date: "2022-01-12T08:57:43.000Z",
                         amount: "2000",
-                        category: { name : "Salary", type : "income"},
+                        category: "Salary",
                         descr: "finally payday"
                     },
                 ],
@@ -99,62 +98,46 @@ export const userReducer = (state = INITIAL_STATE, action) => {
                 logged: false,
                 user: {}
             }
-        case ADD_INCOME: {
-            const currentAccount = state.user.accounts.find(acc =>
-                acc.name === action.payload.account)
-            currentAccount.incomes.unshift(action.payload)
+        // case ADD_INCOME: {
+        //     const currentAccount = state.user.accounts.find(acc =>
+        //         acc.name === action.payload.account)
+        //     currentAccount.incomes.unshift(action.payload)
+        case ADD_INCOME :
+            // console.log([...action.payload]); 
             return {
                 ...state,
                 user: {
                     ...state.user,
-                    accounts: [
-                        ...state.user.accounts
-                    ]
+                    accounts : [...action.payload]
                 }
-            }
-        }
-        case ADD_EXPENSE: {
-            const currentAccount = state.user.accounts.find(acc =>
-                acc.name === action.payload.account)
-            currentAccount.expenses.unshift(action.payload)
+    
+            }    
+        case ADD_EXPENSE :
+            // console.log([...action.payload]); 
             return {
                 ...state,
-                user: {
+                user : {
                     ...state.user,
-                    accounts: [
-                        ...state.user.accounts
-                    ]
+                    accounts : [...action.payload]
                 }
-            }
-        }
-        case ADD_BUDGET: {
-            const currentAccount = state.user.accounts.find(acc =>
-                acc.name === action.payload.account)
-            currentAccount.budgets.unshift(action.payload)
+            }   
+        case ADD_BUDGET : 
+            return {
+                
+                ...state,
+                user : {
+                    ...state.user,
+                    budgets : [...state.user.budgets, action.payload]
+                }
+            }    
+        case ADD_GOAL : 
             return {
                 ...state,
-                user: {
+                user : {
                     ...state.user,
-                    accounts: [
-                        ...state.user.accounts
-                    ]
+                    goals : [...state.user.goals, action.payload]
                 }
             }
-        }
-        case ADD_GOAL: {
-            const currentAccount = state.user.accounts.find(acc =>
-                acc.name === action.payload.account)
-            currentAccount.goals.unshift(action.payload)
-            return {
-                ...state,
-                user: {
-                    ...state.user,
-                    accounts: [
-                        ...state.user.accounts
-                    ]
-                }
-            }
-        }
         case ADD_CATEGORY_INCOME:
             return {
                 ...state,
@@ -193,6 +176,24 @@ export const userReducer = (state = INITIAL_STATE, action) => {
                     categories: action.payload.categories
                 }
             } 
+        case UPDATE_ACCOUNTS : 
+            return {
+                ...state,
+                user : {
+                    ...state.user,
+                    accounts: [...action.payload]
+                }
+            } 
+
+        case EDIT_ACCOUNT:
+            return {
+                ...state,
+                user : {
+                    ...state.user,
+                    accounts: [...action.payload]
+                }
+            }
+
         case CLEAR_GOALS : 
             return {
                 ...state,
