@@ -13,35 +13,41 @@ import SavingsIcon from '@mui/icons-material/Savings';
 import HistoryIcon from '@mui/icons-material/History';
 import AssessmentIcon from '@mui/icons-material/Assessment';
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
+import { useDispatch, useSelector } from "react-redux";
+import { logoutAction } from "../redux/actions/userActions";
 
 export default function Header(){
    
     const [navStatusOpen, setNavStatusOpen] = useState(false);
     const [screenSize, setScreenSize] = useState("large");
-   
+    const logged = useSelector(state => state.userData.logged);
+    const dispatch = useDispatch();
 
     const handleClick = () => {
-        
         setNavStatusOpen(!navStatusOpen);
-        
-        
     }
+
     return (
         <>
-        <Logo src="logo.png" onClick={handleClick} />
-        <StyledHeader status={navStatusOpen}>
-            <Link className={styles.btn} to="/about"><LightbulbIcon /><LinkName>About us</LinkName></Link>
-            <Link className={styles.btn} to="/login"><LoginIcon /><LinkName>Login</LinkName></Link>
-            <Link className={styles.btn} to="/register"><HowToRegIcon /><LinkName>Register</LinkName></Link>
-            <Link className={styles.btn} to="/home"><HomeIcon /><LinkName>Home</LinkName></Link>
-            <Link className={styles.btn} to="/profile"><AssignmentIndIcon/><LinkName>My Profile</LinkName></Link>   
-            <Link className={styles.btn} to="/categories"><CategoryIcon/><LinkName>Categories</LinkName></Link>  
-            <Link className={styles.btn} to="/budgets"><SavingsIcon /><LinkName>Budgets</LinkName></Link>  
-            <Link className={styles.btn} to="/history"><HistoryIcon /><LinkName>History</LinkName></Link>  
-            <Link className={styles.btn} to="/reports"><AssessmentIcon /><LinkName>Reports</LinkName></Link>  
-            <Link className={styles.btn} to="/accounts"><AccountBalanceWalletIcon /><LinkName>Accounts</LinkName></Link>  
-            <Link className={styles.btn} to="/"><LogoutIcon /><LinkName>Logout</LinkName></Link>
-        </StyledHeader>
+            <Logo src="logo.png" onClick={handleClick} />
+            <StyledHeader status={navStatusOpen}>
+                <Link className={styles.btn} to="/about"><LightbulbIcon /><LinkName>About us</LinkName></Link>
+                <Link className={styles.btn} to="/login"><LoginIcon /><LinkName>Login</LinkName></Link>
+                <Link className={styles.btn} to="/register"><HowToRegIcon /><LinkName>Register</LinkName></Link>
+                {
+                    logged && 
+                    <>
+                        <Link className={styles.btn} to="/home"><HomeIcon /><LinkName>Home</LinkName></Link>
+                        <Link className={styles.btn} to="/profile"><AssignmentIndIcon/><LinkName>My Profile</LinkName></Link>   
+                        <Link className={styles.btn} to="/categories"><CategoryIcon/><LinkName>Categories</LinkName></Link>  
+                        <Link className={styles.btn} to="/budgets"><SavingsIcon /><LinkName>Budgets</LinkName></Link>  
+                        <Link className={styles.btn} to="/history"><HistoryIcon /><LinkName>History</LinkName></Link>  
+                        <Link className={styles.btn} to="/reports"><AssessmentIcon /><LinkName>Reports</LinkName></Link>  
+                        <Link className={styles.btn} to="/accounts"><AccountBalanceWalletIcon /><LinkName>Accounts</LinkName></Link>  
+                        <Link className={styles.btn} onClick={() => dispatch(logoutAction)} to="/login"><LogoutIcon /><LinkName>Logout</LinkName></Link>
+                    </>
+                }
+            </StyledHeader>
         </>
         
     );

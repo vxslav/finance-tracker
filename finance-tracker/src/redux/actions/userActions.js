@@ -4,7 +4,6 @@ import { getDate } from "../../util";
 import { useReducer } from 'react';
 import { accordionDetailsClasses } from '@mui/material';
 
-
 export const LOGIN = "LOGIN";
 export const LOGOUT = "LOGOUT";
 export const ADD_INCOME = "ADD_INCOME";
