@@ -6,6 +6,7 @@ import TotalBox from "./TotalBox";
 import { useSelector } from "react-redux";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Pie } from 'react-chartjs-2';
+import Button from '@mui/material/Button';
 
 import { randomColor } from "randomcolor"; 
 import LegendField from "./LegendField";
@@ -17,6 +18,10 @@ export default function Home() {
     const user = useSelector(state => state.userData.user);
     const [toggle, setToggle] = React.useState(true);
     const dataMap = new Map();
+
+    const handleClick = () => {
+        setToggle(prev => !prev);
+    }
     
     if(toggle){
         //in case of incomes
@@ -96,6 +101,7 @@ export default function Home() {
                         })
                     }   
                     <AddButtons/>
+                    <Button className="w-200" onClick={handleClick} variant="contained" color={!toggle ? "success" : "error"}>{!toggle ? "Check Incomes" : "Check Expenses"}</Button>
                 </div>
                 
             </div>
