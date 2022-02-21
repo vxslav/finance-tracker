@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import Slider from '@mui/material/Slider'
 import { useDispatch, useSelector } from 'react-redux';
@@ -150,7 +150,7 @@ export const RangeFilter = () => {
     const [filteredIncomes, setFilteredIncomes] = useState([]);
     const [filteredExpenses, setFilteredExpenses] = useState([]);
     const dispatch = useDispatch();
-
+   
     function valuetext(value) {
         return `BGN ${value}`;
     }
@@ -161,7 +161,10 @@ export const RangeFilter = () => {
     const maxI = Math.max(...amountsIncome);
     const maxE = Math.max(...amountsExpense);
     let max = Math.max(maxI, maxE);
-
+    useEffect(() => {
+         dispatch(applyRangeFilter(0,max))
+    }, []);
+   
     const [value, setValue] = useState([0, max]);
     //a step behing in console log? to be fixed
     const handleChange = (event, newValue) => {
