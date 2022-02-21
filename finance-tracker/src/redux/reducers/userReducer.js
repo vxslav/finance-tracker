@@ -54,7 +54,24 @@ export const userReducer = (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 logged: false,
-                user: {}
+                user: {
+                    email: "guest@guest.com",
+                    categories : [],
+                    accounts: [
+                        {
+                            name: "main",
+                            expenses: [],
+                            incomes: [],
+                            goals: []
+                        },
+            
+                    ],
+                    budgets: [],
+                    incomeCategories: basicIncomeCategories,
+                    expenseCategories: basicExpenseCategories,
+                    birthdate: "2021-12-16T14:00:51.813Z",
+                    firstName: "Guest",
+                    lastName: "Guest",}
             }
         case ADD_INCOME :
             return {
