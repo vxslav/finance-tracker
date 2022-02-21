@@ -13,7 +13,7 @@ import { removeIncomeExpense } from "../redux/actions/userActions";
 
 
 export default function HistoryPage() {
-     const dispatch = useDispatch();
+    const dispatch = useDispatch();
     const [isFiltered, setIsFiltered] = useState(false);
     const [selectedAccounts, setSelectedAccounts] = useState([]);
     const userAccounts = useSelector(state => state.userData.user.accounts);
@@ -44,7 +44,7 @@ export default function HistoryPage() {
             if (start && end) return current >= start && current <= end;
             else return current >= start && current <= (new Date()).getTime();
         });
-//console.log(filtered)
+    //console.log(filtered)
     const getTimeString = (timeStamp) => {
         const dateTime = JSON.stringify(timeStamp);
         const dateArr = dateTime.split("T");
@@ -89,9 +89,9 @@ export default function HistoryPage() {
 
             <div>
                 <StyledFilters>
-                   <h6>Set amount range: </h6>
+                    <h6>Set amount range: </h6>
                     <RangeFilter />
-                    
+
                     <Row>
                         <Column>
                             <CategoryFilter />
@@ -108,9 +108,9 @@ export default function HistoryPage() {
                                 dispatch(clearFilters)
                             }}>Clear Filters
                             </StyledButton>
-                        </Column>                    
+                        </Column>
                     </Row>
-    
+
                 </StyledFilters>
 
                 <table>
@@ -125,7 +125,7 @@ export default function HistoryPage() {
                         </tr>
                     </thead>
                     <tbody>
-        {/* <div className={styles.page}>
+                        {/* <div className={styles.page}>
          <h1>HistoryPage</h1>
          <AddButtons/>
 
@@ -156,35 +156,35 @@ export default function HistoryPage() {
                 })
              })} */}
 
-                        {(selectedAccounts.length > 0 ? selectedAccounts : userAccounts).map(account => {
-                            return (
-                                <>
-                                    <tr key={account.name} className={styles.accountName}><td colSpan="6">{account.name}</td></tr>
-                                    {(isFiltered ? filtered : account.incomes.concat(account.expenses)).map((item, i) => {
-                                        return (
-                                            <tr key={item.id}>
-                                                <td>{item.amount}</td>
-                                                <td>{allIncomes.findIndex(inc => inc.descr === item.descr) > -1 ? "Income" : "Expense"}</td>
-                                                <td>{item.category}</td>
-                                                <td><StyledInput
-                                                    name="description"
-                                                    defaultValue={item.descr}
-                                                    onKeyDown={(e) => {
-                                                        if (e.key === 'Enter') {
-                                                            confirmChange(item.date, description)
-                                                        }
-                                                    }}
-                                                    onChange={(e) => setDescription(e.target.value)} />
-                                                </td>
-                                                <td>{getTimeString(item.date)}</td>
-                                                <td><DeleteForeverIcon onClick={() => console.log(item.id)} /></td>
-                                            </tr>
-                                        )
-                                    })}
+                    {(selectedAccounts.length > 0 ? selectedAccounts : userAccounts).map(account => {
+                        return (
+                            <>
+                                <tr key={account.name} className={styles.accountName}><td colSpan="6">{account.name}</td></tr>
+                                {(isFiltered ? filtered : account.incomes.concat(account.expenses)).map((item, i) => {
+                                    return (
+                                        <tr key={item.id}>
+                                            <td>{item.amount}</td>
+                                            <td>{allIncomes.findIndex(inc => inc.description === item.description) > -1 ? "Income" : "Expense"}</td>
+                                            <td>{item.category}</td>
+                                            <td><StyledInput
+                                                name="description"
+                                                defaultValue={item.description}
+                                                onKeyDown={(e) => {
+                                                    if (e.key === 'Enter') {
+                                                        confirmChange(item.date, description)
+                                                    }
+                                                }}
+                                                onChange={(e) => setDescription(e.target.value)} />
+                                            </td>
+                                            <td>{item.date}</td>
+                                            <td><DeleteForeverIcon onClick={() => console.log(item.id)} /></td>
+                                        </tr>
+                                    )
+                                })}
 
-                                </>
-                            )
-                        })}
+                            </>
+                        )
+                    })}
                     </tbody>
                 </table>
             </div >
@@ -213,7 +213,7 @@ const StyledFilters = styled.div`
     flex-flow : column wrap;
     justify-content: space-evenely;
     align-items: center;    
-`   
+`
 
 const StyledButton = styled.button`
     width: 100%;
