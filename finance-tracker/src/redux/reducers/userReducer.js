@@ -1,3 +1,4 @@
+import { basicExpenseCategories, basicIncomeCategories } from '../../utils/consts';
 import { ADD_EXPENSE,
     ADD_GOAL,
     ADD_INCOME,
@@ -12,65 +13,28 @@ import { ADD_EXPENSE,
     UPDATE_ACCOUNTS,
     EDIT_ACCOUNT,
 } from '../actions/userActions';
-import {basicIncomeCategories, basicExpenseCategories} from "../../utils/consts";
+// import {basicIncomeCategories, basicExpenseCategories} from "../../utils/consts";
 
 const INITIAL_STATE = {
-    logged: true,
-    user : {
-        email: "vasko47@abv.bg",
-        categories: [],
+    logged: false,
+    user: {
+        email: "guest@guest.com",
+        categories : [],
         accounts: [
             {
                 name: "main",
                 expenses: [],
-                incomes: [
-                    {
-                        date: "2/18/2022",
-                        amount: "123",
-                        category: "Initial Deposit",
-                        description: "Initial App Deposit",
-                        id: 1
-                    }
-                ],
+                incomes: [],
                 goals: []
             },
-            {
-                name: "sub-zero",
-                expenses: [],
-                incomes: [
-                    {
-                        date: "2/18/2022",
-                        amount: "1200",
-                        category: "Initial Deposit",
-                        description: "Initial App Deposit",
-                        id: 2
-                    }
-                ],
-                goals: []
-            },
-            {
-                name: "schmain",
-                expenses: [],
-                incomes: [
-                    {
-                        date: "2/18/2022",
-                        amount: "10",
-                        category: "Initial Deposit",
-                        description: "Initial App Deposit",
-                        id: 3
-                    }
-                ],
-                goals: []
-            }
         ],
         budgets: [],
         incomeCategories: basicIncomeCategories,
         expenseCategories: basicExpenseCategories,
-        birthdate: "2001-11-09",
-        firstName: "Васил",
-        lastName: "Любенов",
-        id: "38cQLPYsrIzBBkRnpugS"
-    }
+        birthdate: "2021-12-16T14:00:51.813Z",
+        firstName: "Guest",
+        lastName: "Guest",
+    }   
 }
 
 export const userReducer = (state = INITIAL_STATE, action) => {

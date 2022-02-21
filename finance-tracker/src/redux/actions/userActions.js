@@ -1,8 +1,7 @@
 import { db } from '../../firebase';
 import { collection, getDocs, updateDoc, doc } from "firebase/firestore"; 
-import { getDate } from "../../util";
-import { useReducer } from 'react';
-import { accordionDetailsClasses } from '@mui/material';
+// import { accordionDetailsClasses } from '@mui/material';
+import { setSnackbar } from "./snackbarActions";
 
 export const LOGIN = "LOGIN";
 export const LOGOUT = "LOGOUT";
@@ -172,7 +171,7 @@ export const loginAction = (email) => {
 } 
 
 export const addAccountAction = (id, name, amount, accounts) => {
-    const date = getDate();
+    const date = JSON.stringify(new Date());
     return async function(dispatch) {
         const userRef = doc(db, "users", id);
         const newFields = {accounts: [...accounts,
@@ -249,6 +248,13 @@ export const addExpense = (user, details) => {
             }
             br++;
         });
+
+        const newBudget = user.budgets;
+        if(newBudget.some(budget => budget.category === details.category)){
+            const ind = newBudget.findIndex(budget => budget.category === details.category);
+            const prevBudget = {...newBudget[ind], amount: newBudget[ind].max};
+            dispatch(addBudget(user, prevBudget));
+        }
 
         await updateDoc(userRef, {accounts: newField});
         dispatch({type: ADD_EXPENSE, payload: newField});
@@ -409,9 +415,9 @@ export const removeIncomeExpense = (user, id, accountName, isExpense) => {
 } 
 
 const isWithinDate = (date, from, to) => {
-    const timeFrom = new Date(from).getTime();
-    const timeDate = new Date(date).getTime();
-    const timeTo = new Date(to).getTime();
+    const timeFrom = new Date(from.slice(1,11)).getTime();
+    const timeDate = new Date(date.slice(1,11)).getTime();
+    const timeTo = new Date(to.slice(1,11)).getTime();
     return (timeFrom < timeDate && timeDate < timeTo);
 }
 
@@ -419,6 +425,7 @@ const getAmount = (user, from, to, category) => {
     let amount = 0;
     user.accounts.forEach(acc => {
         acc.expenses.forEach(exp => {
+    
             if(exp.category === category && isWithinDate(exp.date, from, to)){
                 amount += Number(exp.amount);
             }
@@ -452,6 +459,10 @@ export const addBudget = (user, details) => {
                 to: details.to,
             });
         }
+
+        if(amount > details.amount){
+            dispatch(setSnackbar(true, "warning", `You have exceeded you ${details.category} budget!`));
+        }
         
         await updateDoc(userRef, {budgets: newField});
         dispatch({type: UPDATE_BUDGET, payload: newField});
@@ -464,13 +475,11 @@ export const editBudget = (user, details, prevCategory) => {
         const newField = user.budgets;
 
         //in case we already have the same budget category we re-write it
-        if(prevCategory === details.category){
-            dispatch(addBudget(user, details));
-        }
-        else{
+        if(prevCategory !== details.category){
             dispatch(removeBudget(user, prevCategory));
-            dispatch(addBudget(user, details));
         }
+
+        dispatch(addBudget(user, details));
         
         await updateDoc(userRef, {budgets: newField});
         dispatch({type: UPDATE_BUDGET, payload: newField});
