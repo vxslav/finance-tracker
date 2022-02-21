@@ -1,7 +1,5 @@
-import { basicIncomeCategories, basicExpenseCategories } from "../../utils/consts";
-import { incomeArr } from '../mock-data/mock-income';
-import { expenseArr } from '../mock-data/mock-expense';
-import { budgetArr } from '../mock-data/mock-budget';
+import { basicExpenseCategories, basicIncomeCategories } from '../../utils/consts';
+
 import { ADD_EXPENSE,
     ADD_GOAL,
     ADD_INCOME,
@@ -16,77 +14,28 @@ import { ADD_EXPENSE,
     UPDATE_ACCOUNTS,
     EDIT_ACCOUNT,
 } from '../actions/userActions';
+
 const INITIAL_STATE = {
     logged: false,
     user: {
-        email: "vasko47@abv.bg",
+        email: "guest@guest.com",
         categories : [],
         accounts: [
             {
                 name: "main",
                 expenses: [],
-                incomes: [
-                    {
-                        date: "2022-01-07T08:57:43.000Z",
-                        amount: "123",
-                        category: "Initial Deposit",
-                        description: "Initial App Deposit",
-                        id: 1
-                    },
-                    {
-                        date: "2022-02-17T08:57:43.000Z",
-                        amount: "123",
-                        category: "Initial Deposit",
-                        description: "Initial App Deposit",
-                        id: 12
-                    }
-                ],
+                incomes: [],
                 goals: []
             },
-            {
-                name: "sub-zero",
-                expenses: [],
-                incomes: [
-                    {
-                        date: "2021-12-29T08:57:43.000Z",
-                        amount: "290",
-                        category: "Books",
-                        description: "Sound recorder",
-                        id : 123123
-                    },
-                    {
-                        date: "2022-03-05T08:57:43.000Z",
-                        amount: "1200",
-                        category: "Initial Deposit",
-                        description: "Initial App Deposit",
-                        id: 2
-                    }
-                ],
-                goals: []
-            },
-            {
-                name: "schmain",
-                expenses: [],
-                incomes: [
-                    {
-                        date: "2021-03-05T08:57:43.000Z",
-                        amount: "10",
-                        category: "Initial Deposit",
-                        description: "Initial App Deposit",
-                        id: 3
-                    }
-                ],
-                goals: []
-            }
+
         ],
         budgets: [],
         incomeCategories: basicIncomeCategories,
         expenseCategories: basicExpenseCategories,
-        birthdate: "2001-11-09",
-        firstName: "Васил",
-        lastName: "Любенов",
-        id: "38cQLPYsrIzBBkRnpugS"
-    }
+        birthdate: "2021-12-16T14:00:51.813Z",
+        firstName: "Guest",
+        lastName: "Guest",
+    }   
 }
 
 export const userReducer = (state = INITIAL_STATE, action) => {

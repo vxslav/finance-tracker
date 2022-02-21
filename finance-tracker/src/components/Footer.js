@@ -53,6 +53,7 @@ export default function Footer() {
 
 const StyledFooter = styled.footer`
     width: 100%;
+    height: 100%;
     padding: 50px;
     color : #fff;
     display : flex;
@@ -63,7 +64,6 @@ const StyledFooter = styled.footer`
         flex-direction : column;
         background-color :#2F40A2;
     }
-
 `
 const Column = styled.div`
     display: flex;
