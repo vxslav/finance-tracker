@@ -1,7 +1,5 @@
 import { basicExpenseCategories, basicIncomeCategories } from '../../utils/consts';
 
-import { basicIncomeCategories, basicExpenseCategories } from "../../utils/consts";
-
 import { ADD_EXPENSE,
     ADD_GOAL,
     ADD_INCOME,

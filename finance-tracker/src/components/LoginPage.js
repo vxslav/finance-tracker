@@ -44,14 +44,11 @@ export default function LoginPage(){
     const handleClick = () => {
         signInWithEmailAndPassword(auth, email, pass)
         .then((userCredential) => {
-            // const user = userCredential.user;
             if(rememberMe){
                 localStorage.setItem("currentUser", email);
             }
             sessionStorage.setItem("currentUser", email);
 
-            //setRedux user
-            // let currentUser = localStorage.getItem("currentUser");
             dispatch(loginAction(email));
             navigate("/home");
         })

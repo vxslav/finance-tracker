@@ -186,7 +186,7 @@ export default function FormDialog(props) {
                 </>
               ) : ( <BasicDatePicker label="Choose date" value={selectedDate} selected={selectedDate} onChange={date => setSelectedDate(date)} />)}
               {props.value !== "Budget" && <CategoryPicker name="account" value={account} onChange={e => setAccount(e.target.value)} required/>}
-              <CategoryPicker type="Expense" name="category" value={category} list={account} disabled={!((account && props.value !== "Budget") || props.value === "Budget")} onChange={e => setCategory(e.target.value)} />
+              <CategoryPicker type={props.value} name="category" value={category} list={account} disabled={!((account && props.value !== "Budget") || props.value === "Budget")} onChange={e => setCategory(e.target.value)} />
               
             </StyledEngineProvider>
           </Pickers>

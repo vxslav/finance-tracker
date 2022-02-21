@@ -238,13 +238,19 @@ export const addExpense = (user, details) => {
 
         newField.forEach(acc => {
             if(acc.name === details.account){
-                const newExpenses = [...acc.expenses, {date: details.date,
-                                amount: details.amount,
-                                category: details.category,
-                                description: details.descr,
-                                id: id
-                }];
-                newField[br] = {...newField[br], expenses: newExpenses};
+                if(Number(acc.total) <  Number(details.amount)){
+                    dispatch(setSnackbar(true, "error", `You are trying to exceed your total in ${acc.name}!`));
+                    return;
+                }
+                else{
+                    const newExpenses = [...acc.expenses, {date: details.date,
+                        amount: details.amount,
+                        category: details.category,
+                        description: details.descr,
+                        id: id
+                    }];
+                    newField[br] = {...newField[br], expenses: newExpenses, total: (Number(newField[br].total) - Number(details.amount)).toString()};
+                }
             }
             br++;
         });
@@ -277,7 +283,7 @@ export const addIncome = (user, details) => {
                                 description: details.descr,
                                 id: id
                 }];
-                newField[br] = {...newField[br], incomes: newIncomes};
+                newField[br] = {...newField[br], incomes: newIncomes, total: (Number(newField[br].total) + Number(details.amount)).toString()};
             }
             br++;
         });
