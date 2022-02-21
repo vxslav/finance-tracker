@@ -5,29 +5,25 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
+import DatePick from './DatePick';
 import BasicDatePicker from './DatePicker';
 import { StyledEngineProvider } from '@mui/material/styles';
 import CategoryPicker from "./CategoryPicker";
 import styled from 'styled-components';
 import { useState} from 'react';
+import { addGoalAction, addBudget, addIncome, addExpense, editExpense, editIncome, editBudget } from '../redux/actions/userActions';
 import { useDispatch, useSelector } from 'react-redux';
 import { setSnackbar } from '../redux/actions/snackbarActions';
 import styles from "./styles/progress_card.module.css";
 import { getFormatedDate } from '../util';
-import { addGoalAction, 
-          addBudgetAction, 
-          addIncome, 
-          addExpense, 
-          editExpenses} from '../redux/actions/userActions';
-
 export default function FormDialog(props) {
 
   const [open, setOpen] = useState(false);
   const [amount, setAmount] = useState(0);
   const [descr, setDescr] = useState("");
   const [selectedDate, setSelectedDate] = useState(null);
-  const [fromDate, setFromDate] = useState(null);
-  const [toDate, setToDate] = useState(null);
+  const [fromDate, setFromDate] = useState(getFormatedDate(new Date()));
+  const [toDate, setToDate] = useState(getFormatedDate(new Date()));
   const [category, setCategory] = useState("");
   const [account, setAccount] = useState("");
   const dispatch = useDispatch();
@@ -42,51 +38,47 @@ export default function FormDialog(props) {
     setDescr("");
     setAccount("");
     setCategory("");
-    setFromDate(null);
+    setFromDate(getFormatedDate(new Date()));
     setSelectedDate(null);
-    setToDate(null);
+    setToDate(getFormatedDate(new Date()));
     setOpen(false);
   };
 
   const handleAdd = (value) => {
-    dispatch(setSnackbar(true, "success", "Transaction added!"))
-    let details = {
+    dispatch(setSnackbar(true, "success", "Transaction added!"));
+
+    const detail = {
       amount,
       descr,
       category,
-      date: getFormatedDate(selectedDate),
+      date: selectedDate,
       account
     }
 
     switch(value) {
         case "Expense" :
-          dispatch(addExpense(user, details))
+          dispatch(addExpense(user, {...detail, date: getFormatedDate(selectedDate)}))
           break;
 
         case "Savings": 
-          dispatch(addGoalAction(user, details))
+          dispatch(addGoalAction(user, {...detail, date: getFormatedDate(selectedDate)}))
           break;
 
         case "Income" : 
-          dispatch(addIncome(user, details))
+          dispatch(addIncome(user, {...detail, date: getFormatedDate(selectedDate)}))
           break;
 
-        case "Budget" : {
-          let details = {
+        case "Budget" : 
+          const details = {
             amount, 
             category,
-            account,
-            from: fromDate, 
-            to: toDate
+            from: getFormatedDate(fromDate), 
+            to: getFormatedDate(toDate)
           }
-          try{
-            dispatch(addBudgetAction(details))
-          }
-          catch(err){
-            console.log(err);
-          }
-        }
+
+          dispatch(addBudget(user, details));
         break;
+
         default: {
           return;
         }
@@ -94,19 +86,20 @@ export default function FormDialog(props) {
     handleClose();
   };
 
-  const handleEdit = () => {
+  const handleEdit = (value) => {
     dispatch(setSnackbar(true, "success", "Transaction updated!"))
-    let details = {
+    
+    const detail = {
       amount,
       descr,
       category,
-      date: getFormatedDate(selectedDate),
+      date: selectedDate,
       account
     }
 
     switch(props.value) {
         case "Expense" :
-          // dispatch(editExpenses(user, details))
+          dispatch(editExpense(user, detail, props.prevAccountName, props.expenseID))
           break;
 
         case "Savings": 
@@ -114,7 +107,7 @@ export default function FormDialog(props) {
           break;
 
         case "Income" : 
-          // dispatch(editIncome(user, details))
+          dispatch(editIncome(user, detail, props.prevAccountName, props.incomeID))
           break;
 
         case "Budget" : {
@@ -130,7 +123,11 @@ export default function FormDialog(props) {
           }
           catch(err){
             console.log(err);
+            // from: getFormatedDate(fromDate), 
+            // to: getFormatedDate(toDate)
           }
+        
+          dispatch(editBudget(user, details));
         }
         break;
         default: {
@@ -160,7 +157,7 @@ export default function FormDialog(props) {
         {props.operation === "edit" ? "Edit" : "Add"} {props.value}
       </Button>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>{props.operation === "edit" ? "Edit" : "Add"} {props.value}</DialogTitle>
+        <DialogTitle>{props.operation === "edit" ? "Edit" : "Add"} {props.value} </DialogTitle>
         <DialogContent>
           <TextField
             autoFocus
@@ -175,7 +172,7 @@ export default function FormDialog(props) {
             onChange={handleInput}
           />
           
-            <TextField
+            {(props.value == "Income" || props.value == "Expense") && <TextField
             margin="dense"
             id="name"
             label="Description"
@@ -185,20 +182,19 @@ export default function FormDialog(props) {
             name ="description"
             value={descr}
             onInput={handleInput}
-          />
-          
+          />}
           
           <Pickers>
             <StyledEngineProvider injectFirst>
              
               {props.value === "Budget" ? (
                 <>
-                <BasicDatePicker label="From... " value={fromDate} selected={fromDate} onChange={date => setFromDate(date)} />
-                <BasicDatePicker label="To..." value={toDate} selected={toDate} onChange={date => setToDate(date)} />
+                  <DatePick isFromTo={true} label="From... " value={fromDate} handleDateChange={setFromDate} />
+                  <DatePick isFromTo={true} label="To..." value={toDate} handleDateChange={setToDate} />
                 </>
               ) : ( <BasicDatePicker label="Choose date" value={selectedDate} selected={selectedDate} onChange={date => setSelectedDate(date)} />)}
-              <CategoryPicker name="account" value={account} onChange={e => setAccount(e.target.value)} required/>
-              <CategoryPicker name="category" value={category} list={account} disabled={account ? false : true} type={props.value} onChange={e => setCategory(e.target.value)} />
+              {props.value !== "Budget" && <CategoryPicker name="account" value={account} onChange={e => setAccount(e.target.value)} required/>}
+              <CategoryPicker type="Expense" name="category" value={category} list={account} disabled={!((account && props.value !== "Budget") || props.value === "Budget")} onChange={e => setCategory(e.target.value)} />
               
             </StyledEngineProvider>
           </Pickers>
@@ -207,8 +203,8 @@ export default function FormDialog(props) {
         <DialogActions>
           <Button fullWidth={true} onClick={handleClose}>Cancel</Button>
           <Button fullWidth={true} variant="contained" 
-            disabled={!((amount && category && account && descr && (selectedDate || (fromDate && toDate)))) } 
-            onClick={ props.operation === "edit" ? () => handleEdit() : () => handleAdd(props.value) }> {props.operation === "edit" ? "Edit" : "Add"} {props.value}
+            disabled={!(((amount && category && account && descr && (selectedDate || (fromDate && toDate))) || ((amount && category && props.value === "Budget")))) } 
+            onClick={ props.operation === "edit" ? () => handleEdit(props.value) : () => handleAdd(props.value) }> {props.operation === "edit" ? "Edit" : "Add"} {props.value}
           </Button>
         </DialogActions>
       </Dialog>

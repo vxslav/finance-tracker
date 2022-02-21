@@ -1,5 +1,5 @@
 import Header from "./components/Header";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import HomePage from "./components/HomePage";
 import AboutUsPage from "./components/AboutUsPage";
 import LoginPage from "./components/LoginPage";
@@ -13,8 +13,26 @@ import AccountsPage from "./components/AccountsPage";
 import BudgetsPage from "./components/BudgetsPage";
 import HistoryPage from "./components/HistoryPage";
 import ReportsPage from "./components/ReportsPage";
+import { useDispatch } from "react-redux";
+import { loginAction, logoutAction } from "./redux/actions/userActions";
 
 function App() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  window.addEventListener("load", () => {
+    if(sessionStorage.getItem("currentUser")){
+      dispatch(loginAction(sessionStorage.getItem("currentUser")));
+    }
+    else if(localStorage.getItem("currentUser")){
+      dispatch(loginAction(sessionStorage.getItem("currentUser")));
+    }
+    else{
+      dispatch(logoutAction);
+      navigate("/register");
+    }
+  })
+
   return (
     <>
         <Header />

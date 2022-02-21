@@ -37,11 +37,6 @@ export default function LoginPage(){
         } 
     }  
 
-    const handleLogin = () => {
-       
-       
-    }
-
     const handleChange = () => {
         setRememberMe(prev => !prev);
     }
@@ -53,10 +48,11 @@ export default function LoginPage(){
             if(rememberMe){
                 localStorage.setItem("currentUser", email);
             }
-            
+            sessionStorage.setItem("currentUser", email);
+
             //setRedux user
-            let currentUser = localStorage.getItem("currentUser");
-            dispatch(loginAction(currentUser));
+            // let currentUser = localStorage.getItem("currentUser");
+            dispatch(loginAction(email));
             navigate("/home");
         })
         .catch((error) => {
@@ -69,13 +65,14 @@ export default function LoginPage(){
             <Card className={styles.loginCard}>
                 <div className={styles.Regform}>
                     <h3 className={styles.formText}>Login</h3>
-                    <div className={styles.input_container}>
+                    <form className={styles.input_container}>
                         <TextField 
                             fullWidth 
                             id="outlined-basic" 
                             label="Email" 
                             name="loginEmail" 
                             variant="outlined" 
+                            autoComplete="current-email"
                             onInput={(e) => handleInput(e)}/>
                             
                         <TextField 
@@ -87,7 +84,7 @@ export default function LoginPage(){
                             autoComplete="current-password"
                             onInput={(e) => handleInput(e)}/>
                             
-                    </div>
+                    </form>
                     <div className={styles.btnCheckContainer}>
                         <FormControlLabel control={<Checkbox checked={rememberMe} onChange={handleChange}/>} label="Remember me" />
                         <Button variant="contained" disabled={(email && pass) ? false : true} onClick={handleClick}>Sign in</Button>

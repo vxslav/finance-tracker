@@ -5,7 +5,7 @@ import { budgetArr } from '../mock-data/mock-budget';
 import { ADD_EXPENSE,
     ADD_GOAL,
     ADD_INCOME,
-    ADD_BUDGET,
+    UPDATE_BUDGET,
     ADD_CATEGORY_INCOME,
     ADD_CATEGORY_EXPENSE,
     CLEAR_GOALS,
@@ -15,62 +15,71 @@ import { ADD_EXPENSE,
     EDIT_CATEGORY_INCOME,
     UPDATE_ACCOUNTS,
     EDIT_ACCOUNT,
-    EDIT_INCOME,
-    EDIT_EXPENSE
 } from '../actions/userActions';
 const INITIAL_STATE = {
-    logged: true,
+    logged: false,
     user: {
         email: "vasko47@abv.bg",
         categories : [],
         accounts: [
             {
-                name: "Main Account",
-                budgets: [],
-                expenses: [
-                    {
-                        date: "2022-01-10T08:57:43.000Z",
-                        amount: "200",
-                        category: "Entertainment",
-                        descr: "Video player"
-                    },
-                    {
-                        date: "2021-12-29T08:57:43.000Z",
-                        amount: "290",
-                        category: "Books",
-                        descr: "Sound recorder"
-                    },
-                    {
-                        date: "2022-03-05T08:57:43.000Z",
-                        amount: "1200",
-                        category: "Studies",
-                        descr: "a funny course"
-                    },
-                ],
+                name: "main",
+                expenses: [],
                 incomes: [
                     {
-                        date: "2022-03-12T08:57:43.000Z",
-                        amount: "1200",
-                        category:"Initial Desposit",
-                        descr: "Initial App Deposit"
+                        date: "2022-01-07T08:57:43.000Z",
+                        amount: "123",
+                        category: "Initial Deposit",
+                        description: "Initial App Deposit",
+                        id: 1
                     },
                     {
-                        date: "2022-01-12T08:57:43.000Z",
-                        amount: "2000",
-                        category: "Salary",
-                        descr: "finally payday"
-                    },
+                        date: "2022-02-17T08:57:43.000Z",
+                        amount: "123",
+                        category: "Initial Deposit",
+                        description: "Initial App Deposit",
+                        id: 12
+                    }
                 ],
                 goals: []
             },
             {
-                name: "Second Account",
-                budgets: budgetArr,
-                expenses: expenseArr,
-                incomes: incomeArr,
+                name: "sub-zero",
+                expenses: [],
+                incomes: [
+                    {
+                        date: "2021-12-29T08:57:43.000Z",
+                        amount: "290",
+                        category: "Books",
+                        description: "Sound recorder",
+                        id : 123123
+                    },
+                    {
+                        date: "2022-03-05T08:57:43.000Z",
+                        amount: "1200",
+                        category: "Initial Deposit",
+                        description: "Initial App Deposit",
+                        id: 2
+                    }
+                ],
+                goals: []
+            },
+            {
+                name: "schmain",
+                expenses: [],
+                incomes: [
+                    {
+                        date: "2021-03-05T08:57:43.000Z",
+                        amount: "10",
+                        category: "Initial Deposit",
+                        description: "Initial App Deposit",
+                        id: 3
+                    }
+                ],
                 goals: []
             }
         ],
+        budgets: [],
         incomeCategories: basicIncomeCategories,
         expenseCategories: basicExpenseCategories,
         birthdate: "2001-11-09",
@@ -81,9 +90,8 @@ const INITIAL_STATE = {
 }
 
 export const userReducer = (state = INITIAL_STATE, action) => {
-    switch (action.type) {
-        case LOGIN:
-            // add localStorage or sessionStorage token 
+    switch(action.type) {
+        case LOGIN : 
             return {
                 ...state,
                 logged: true,
@@ -91,19 +99,15 @@ export const userReducer = (state = INITIAL_STATE, action) => {
                     ...action.payload
                 }
             }
-        case LOGOUT:
-            // localStorage.removeItem("logged");
+        case LOGOUT : 
+            localStorage.removeItem("currentUser");
+            sessionStorage.removeItem("currentUser");
             return {
                 ...state,
                 logged: false,
                 user: {}
             }
-        // case ADD_INCOME: {
-        //     const currentAccount = state.user.accounts.find(acc =>
-        //         acc.name === action.payload.account)
-        //     currentAccount.incomes.unshift(action.payload)
         case ADD_INCOME :
-            // console.log([...action.payload]); 
             return {
                 ...state,
                 user: {
@@ -112,8 +116,7 @@ export const userReducer = (state = INITIAL_STATE, action) => {
                 }
     
             }    
-        case ADD_EXPENSE :
-            // console.log([...action.payload]); 
+        case ADD_EXPENSE : 
             return {
                 ...state,
                 user : {
@@ -121,13 +124,13 @@ export const userReducer = (state = INITIAL_STATE, action) => {
                     accounts : [...action.payload]
                 }
             }   
-        case ADD_BUDGET : 
+        case UPDATE_BUDGET : 
             return {
                 
                 ...state,
                 user : {
                     ...state.user,
-                    budgets : [...state.user.budgets, action.payload]
+                    budgets : [...action.payload]
                 }
             }    
         case ADD_GOAL : 
