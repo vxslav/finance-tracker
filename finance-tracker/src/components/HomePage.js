@@ -1,7 +1,7 @@
 import React from "react";
 import AddButtons from "./AddButtons";
 import { Chart } from './Chart';
-import{ PieChart } from './PieChart';
+// import{ PieChart } from './PieChart';
 import styled from 'styled-components';
 import Filters from './Filters';
 import EnhancedTable from './EntriesHistory';
@@ -13,7 +13,7 @@ export default function Home() {
                 <AsideWrapper>
                     <AddButtons />
                     <Filters/>
-                    <PieChart />
+                  
                 </AsideWrapper>
             </UpperPageWrapper>
             <TransactionHistoryWrapper>
