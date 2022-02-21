@@ -5,7 +5,6 @@ import{ PieChart } from './PieChart';
 import styled from 'styled-components';
 import Filters from './Filters';
 import EnhancedTable from './EntriesHistory';
-import { ChartRangeFilter } from './chartFilters';
 export default function Home() {
     return (
         <HomePage>
@@ -13,7 +12,6 @@ export default function Home() {
                 <Chart />
                 <AsideWrapper>
                     <AddButtons />
-                    {/* <ChartRangeFilter /> */}
                     <Filters/>
                     <PieChart />
                 </AsideWrapper>

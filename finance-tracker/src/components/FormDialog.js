@@ -16,7 +16,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setSnackbar } from '../redux/actions/snackbarActions';
 import styles from "./styles/progress_card.module.css";
 import { getFormatedDate } from '../util';
-
 export default function FormDialog(props) {
 
   const [open, setOpen] = useState(false);
@@ -98,7 +97,7 @@ export default function FormDialog(props) {
       account
     }
 
-    switch(value) {
+    switch(props.value) {
         case "Expense" :
           dispatch(editExpense(user, detail, props.prevAccountName, props.expenseID))
           break;
