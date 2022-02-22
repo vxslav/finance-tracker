@@ -22,7 +22,7 @@ export default function Home() {
     const handleClick = () => {
         setToggle(prev => !prev);
     }
-    
+
     if(toggle){
         //in case of incomes
         user.accounts.forEach(acc => {
