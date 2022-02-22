@@ -60,7 +60,7 @@ export const LineChart = (props) => {
         return Number(item.amount)
             else return item.amount*(-1);
     })
-console.log(timeline)
+
    let result = []
 
    let accumulator = 0;
@@ -68,7 +68,7 @@ console.log(timeline)
         accumulator += timeline[i];  
         result.push(accumulator);
    }
-console.log(result)
+
     const data = {
         labels,
         datasets: [
