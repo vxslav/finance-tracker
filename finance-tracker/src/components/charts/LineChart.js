@@ -32,8 +32,11 @@ export const LineChart = (props) => {
             },
         },
     };
-   
-    const months = props.data.map(item => (new Date(JSON.parse(item.date))).getMonth())
+    const sortedTransactions = props.data.sort((a,b) => {
+        return ((new Date(a.date)).getTime()) - ((new Date(b.date)).getTime());
+    })
+  
+    const months = sortedTransactions.map(item => (new Date(item.date)).getMonth())
     const labels = months.map(item => {
         switch (item) {
             case 0: return "January";
@@ -51,10 +54,6 @@ export const LineChart = (props) => {
         }
     });
    
-    const sortedTransactions = props.data.sort((a,b) => {
-        return (new Date(JSON.parse(a.date))) - (new Date(JSON.parse(b.date)));
-    })
-  
     const timeline = sortedTransactions.map(item => {
         if(item.type === "income")
         return Number(item.amount)
