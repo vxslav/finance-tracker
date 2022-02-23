@@ -33,7 +33,8 @@ export const LineChart = (props) => {
         },
     };
    
-    const months = props.data.map(item => (new Date(item.date)).getMonth())
+    const months = props.data.map(item => (new Date(item.date)).getMonth());
+
     const labels = months.map(item => {
         switch (item) {
             case 0: return "January";
