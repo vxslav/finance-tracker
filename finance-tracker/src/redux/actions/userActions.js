@@ -21,6 +21,19 @@ export const EDIT_ACCOUNT = "EDIT_ACCOUNT";
 export const REMOVE_ACCOUNT = "REMOVE_ACCOUNT";
 export const EDIT_INCOME = "EDIT_INCOME";
 export const EDIT_EXPENSE = "EDIT_EXPENSE";
+export const UPDATE_USER_INFO = "UPDATE_USER_INFO";
+export const EDIT_EXPENSE_CATEGORY_COLOR = "EDIT_EXPENSE_CATEGORY_COLOR";
+export const EDIT_INCOME_CATEGORY_COLOR = "EDIT_INCOME_CATEGORY_COLOR";
+
+
+export const updateUserInfoAction = (id, details) => {
+    return async function(dispatch) {
+        const userRef = doc(db, "users", id);
+        const newField = {firstName: details.firstName, lastName: details.lastName, birthdate: details.birthdate};
+        await updateDoc(userRef, newField);
+        dispatch({type: UPDATE_USER_INFO, payload: newField});
+    }
+}
 
 export const logoutAction = {
     type: LOGOUT
@@ -65,6 +78,32 @@ export const addCategoryExpenseAction = (category) => {
     return {
         type : ADD_CATEGORY_EXPENSE,
         payload : category
+    }
+}
+
+export const editIncomeColor = (user, color, categoryName) => {
+    return async function(dispatch) {
+        const userRef = doc(db, "users", user.id);
+        
+        const ind = user.incomeCategories.findIndex(cat => cat.name === categoryName);
+        let newIncomeCategories = user.incomeCategories;
+        newIncomeCategories[ind].color = color;
+
+        await updateDoc(userRef, {incomeCategories: newIncomeCategories});
+        dispatch({type: EDIT_INCOME_CATEGORY_COLOR, payload: newIncomeCategories});
+    }
+}
+
+export const editExpenseColor = (user, color, categoryName) => {
+    return async function(dispatch) {
+        const userRef = doc(db, "users", user.id);
+        
+        const ind = user.expenseCategories.findIndex(cat => cat.name === categoryName);
+        let newExpenseCategories = user.expenseCategories;
+        newExpenseCategories[ind].color = color;
+
+        await updateDoc(userRef, {expenseCategories: newExpenseCategories});
+        dispatch({type: EDIT_EXPENSE_CATEGORY_COLOR, payload: newExpenseCategories});
     }
 }
 
@@ -234,7 +273,6 @@ export const addExpense = (user, details) => {
         const userRef = doc(db, "users", user.id);
         const newField = user.accounts;
         let newTransactions = [];
-        let color = user.expenseCategories[user.expenseCategories.findIndex(exp => exp.name === details.category)].color;
         
         let br = 0;
         
@@ -259,7 +297,7 @@ export const addExpense = (user, details) => {
 
                     const newExpenses = [...acc.expenses, {date: details.date,
                         amount: details.amount,
-                        category: {name: details.category, color},
+                        category: details.category,
                         description: details.descr,
                         id: id
                     }];
@@ -287,7 +325,6 @@ export const addIncome = (user, details) => {
         const newField = user.accounts;
         let br = 0;
         let newTransactions = [];
-        let color = user.incomeCategories[user.incomeCategories.findIndex(inc => inc.name === details.category)].color;
 
         const id = new Date().valueOf();
 
@@ -295,7 +332,7 @@ export const addIncome = (user, details) => {
             if(acc.name === details.account){
                 const newIncomes = [...acc.incomes, {date: details.date,
                                 amount: details.amount,
-                                category: {name: details.category, color},
+                                category: details.category,
                                 description: details.descr,
                                 id: id
                 }];

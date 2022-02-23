@@ -31,18 +31,18 @@ export default function RegisterPage(){
     const usersCollectionRef = collection(db, "users");
 
     const createUser = async () => {
-        const date = JSON.stringify(new Date());
+        const date = JSON.stringify(new Date()).replaceAll('"', '');
         //init a new User with his coresponding data
         await addDoc(usersCollectionRef, { firstName: userData.firstName,
                                             lastName: userData.lastName,
                                             email: userData.email, 
-                                            birthdate: JSON.stringify(new Date(userData.birthdate)),
+                                            birthdate: JSON.stringify(new Date(userData.birthdate)).replaceAll('"', ''),
                                             categories: [],
                                             incomeCategories: basicIncomeCategories,
                                             expenseCategories: basicExpenseCategories,
                                             accounts: [{
                                                         name: "main",
-                                                        incomes: [{category: {name: "Initial Deposit", color: "#404a0d"}, date: date, description: "Initial App Deposit", amount: userData.startBudget, id: 1}],
+                                                        incomes: [{category: "Initial Deposit", date: date, description: "Initial App Deposit", amount: userData.startBudget, id: 1}],
                                                         expenses: [],
                                                         goals: [],
                                                         total: userData.startBudget
@@ -82,6 +82,10 @@ export default function RegisterPage(){
             })
             .catch((error) => {
                 setHasError(true);
+                if(error.message === "Firebase: Password should be at least 6 characters (auth/weak-password)."){
+                    setMessage("Password should be at least 6 symbols!");
+                    return;
+                }
                 setMessage("Account with the same email already exists!");
             });
         }
