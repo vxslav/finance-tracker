@@ -57,23 +57,23 @@ export default function FormDialog(props) {
 
     switch(value) {
         case "Expense" :
-          dispatch(addExpense(user, {...detail, date: JSON.stringify(selectedDate)}))
+          dispatch(addExpense(user, {...detail, date: JSON.stringify(selectedDate).replaceAll('"', '')}))
           break;
 
         case "Savings": 
-          dispatch(addGoalAction(user, {...detail, date: JSON.stringify(selectedDate)}))
+          dispatch(addGoalAction(user, {...detail, date: JSON.stringify(selectedDate).replaceAll('"', '')}))
           break;
 
         case "Income" : 
-          dispatch(addIncome(user, {...detail, date: JSON.stringify(selectedDate)}))
+          dispatch(addIncome(user, {...detail, date: JSON.stringify(selectedDate).replaceAll('"', '')}))
           break;
 
         case "Budget" : 
           const details = {
             amount, 
             category,
-            from: JSON.stringify(new Date(fromDate)), 
-            to: JSON.stringify(new Date(toDate))
+            from: JSON.stringify(new Date(fromDate)).replaceAll('"', ''), 
+            to: JSON.stringify(new Date(toDate)).replaceAll('"', '')
           }
 
           dispatch(addBudget(user, details));
@@ -115,8 +115,8 @@ export default function FormDialog(props) {
             amount, 
             category,
             account,
-            from: JSON.stringify(new Date(fromDate)), 
-            to: JSON.stringify(new Date(toDate))
+            from: JSON.stringify(new Date(fromDate)).replaceAll('"', ''), 
+            to: JSON.stringify(new Date(toDate)).replaceAll('"', '')
           }
         
           dispatch(editBudget(user, details));
