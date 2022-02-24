@@ -149,7 +149,9 @@ export default function FormDialog(props) {
   return (
     <div>
       <Button 
-          className={styles.btn} 
+          className={styles.btn}
+          // variant={props.variant}
+          // color={props.color}
           variant={props.value === "Budget" && props.operation !== "edit"  ? "contained" : "outlined"}
           color={props.value == "Budget" ? "success" : "primary"}
           onClick={handleClickOpen}>
