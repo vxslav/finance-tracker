@@ -131,9 +131,9 @@ const CustomRow = styled(TableRow)`
     border: 1px solid rgba(255,255,255, 0.5);
 `
 const CustomTableContainer = styled(TableContainer)` 
-    background: #9D50BB;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, #6E48AA, #9D50BB);  /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to right, #6E48AA, #9D50BB); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background: #9D50BB; 
+    background: -webkit-linear-gradient(to right, #6E48AA, #9D50BB);
+    background: linear-gradient(to right, #6E48AA, #9D50BB);
     color : #fff;
 
 `
