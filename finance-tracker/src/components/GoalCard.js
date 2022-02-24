@@ -15,7 +15,7 @@ export default function GoalCard(props) {
 
     return (
 
-        <Card className="bg-light">
+        <Card className="bg-light mb-3">
             <Card.Body>
                 <Card.Title className='d-flex justify-content-between align-items-baseline fw-normal mb-3'>
                     <div className='me-2'>{props.goal.name}</div>
@@ -33,7 +33,7 @@ export default function GoalCard(props) {
                 />
                 <Stack direction='horizontal' gap='2' className='mt-4'>
                     <FormDialog value="Budget" value="Savings" title="Add Savings" goal={props.goal} />
-                    <Button variant="outlined" color="error" className='ms-auto' onClick={handleClick}> Abort Goal </Button>
+                    <Button variant="contained" color="error" className='ms-auto' onClick={handleClick}> Abort Goal </Button>
                 </Stack>
             </Card.Body>
         </Card>
