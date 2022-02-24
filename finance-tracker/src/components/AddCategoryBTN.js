@@ -66,7 +66,10 @@ export default function AddCategoryBTN(props) {
 
   return (
     <div>
-      <Button variant="outlined" onClick={handleClickOpen}>
+      <Button 
+        variant={props.operation == 'edit' ? 'outlined' : 'contained'} 
+        color={props.operation == 'edit' ? 'primary' : 'success'}
+        onClick={handleClickOpen}>
         {props.operation === "edit" ? "Edit" : "Add"} Category
       </Button>
       <Dialog open={open} onClose={handleClose}>
