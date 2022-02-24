@@ -2,13 +2,16 @@ import React from 'react';
 import { toCurrency } from '../utils/util' 
 import styled from 'styled-components';
 import { LineChart} from './charts/LineChart';
+import { useSelector } from 'react-redux';
 
 export const AccountItem = ({  name, total, transactions }) => {
+    const currency = useSelector(state => state.userData.user.currency);
+
     return (
         <Account>
             <AccountName>
                 { name } 
-                <span className='fs-6 ms-1'> / { toCurrency(total) } </span> 
+                <span className='fs-6 ms-1'> / { toCurrency(total, currency) } </span> 
             </AccountName>
             <LineChart data={transactions}/>
         </Account>

@@ -26,10 +26,10 @@ export const getColor = (user, categoryName, type) => {
     return user.expenseCategories[user.expenseCategories.findIndex(exp => exp.name === categoryName)].color;
 }
 
-export const toCurrency = (num) => {
+export const toCurrency = (num, currency) => {
     return Number(num).toLocaleString('en-US', {
         style: 'currency',
-        currency: 'BGN',
+        currency
       })
 }
 export const getProgressBarVariant = (amount, max) => {

@@ -8,7 +8,7 @@ import Paper from '@mui/material/Paper';
 import { useSelector } from "react-redux";
   
 export default function RecentHistoryTable() {
-    const currency = "BGN";
+    const currency = useSelector(state => state.userData.user.currency);
     const transactions = useSelector(state => state.userData.user.transactions);
     const recentTransactions = [];
     let counter = 0;
