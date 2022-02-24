@@ -48,12 +48,13 @@ export default function AddAccountBTN(props) {
   return (
     <div>
       <Button 
-          variant={ props.operation == 'edit' ? 'outlined' : 'contained'} 
-          color={  props.operation == 'edit' ? 'primary' : 'success'} onClick={handleClickOpen}>
-        {props.operation === "edit" ? "Edit" : "Add"} Account
+          className={props.isInHome ? "w-200" : "w-100"}
+          variant="contained" 
+          color={ props.isInHome ? 'secondary' : 'success'} onClick={handleClickOpen}>
+          Add Account
       </Button>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle> {props.operation === "edit" ? "Edit" : "Add"} Account</DialogTitle>
+        <DialogTitle> Add Account</DialogTitle>
         <DialogContent>
           <DialogContentText>
             Enter name and start wage for the account you want to {props.operation === "edit" ? "edit" : "add"}!

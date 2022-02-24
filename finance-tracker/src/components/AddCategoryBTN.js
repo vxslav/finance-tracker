@@ -67,8 +67,9 @@ export default function AddCategoryBTN(props) {
   return (
     <div>
       <Button 
-        variant={props.operation == 'edit' ? 'outlined' : 'contained'} 
-        color={props.operation == 'edit' ? 'primary' : 'success'}
+        className={props.isInHome ? "w-200" : "w-100"}
+        variant='contained'
+        color={props.isInHome ? 'secondary' : 'success'}
         onClick={handleClickOpen}>
         {props.operation === "edit" ? "Edit" : "Add"} Category
       </Button>
