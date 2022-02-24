@@ -64,7 +64,7 @@ export default function HistoryPage() {
 
 export const StyledPage = styled.div`
     width: 70%;
-    margin: 10px auto 30px ;
+    margin: 0 auto 30px ;
     text-align: center;
 `
 export const Column = styled.div`
@@ -105,4 +105,5 @@ export const Heading = styled.h4`
     text-transform : uppercase;
     letter-spacing : 1px;
     margin-bottom: 20px;
+    font-weight: 600;
 `
