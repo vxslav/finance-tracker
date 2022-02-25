@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { StyledPage, StyledFilters, StyledButton, Column, Row, Heading } from './HistoryPage';
@@ -60,13 +60,13 @@ export default function ReportsPage() {
                 <Account>
                 <Column>    
                     <h6>Incomes</h6>
-                    <PieChart purpose="Incomes" transactions={transactions.filter(item => item.type == 'income')} />
+                    <PieChart purpose="Incomes" transactions={transactions.filter(item => item.type === 'income')} />
                 </Column>
             </Account>
             <Account>
                  <Column>
                     <h6>Expenses</h6>
-                    <PieChart puprose="Expenses" transactions={transactions.filter(item => item.type == 'expense')} />
+                    <PieChart puprose="Expenses" transactions={transactions.filter(item => item.type === 'expense')} />
                 </Column>
             </Account>
                

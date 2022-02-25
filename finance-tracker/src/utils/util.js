@@ -20,7 +20,7 @@ export function getFormatedDate(date){
     return formattedDate;
 }
 export const getColor = (user, categoryName, type) => {
-    if(type == 'income' || type == 'Income'){
+    if(type === 'income' || type === 'Income'){
         return user.incomeCategories[user.incomeCategories.findIndex(inc => inc.name === categoryName)].color;
     }
     return user.expenseCategories[user.expenseCategories.findIndex(exp => exp.name === categoryName)].color;
@@ -66,7 +66,7 @@ export const getMonthFromNumber = (item) => {
         case 9 : return "October";
         case 10 : return "November";
         case 11 : return "December";
+        //in case we don't have correct value
+        default: return false;
     };
-    //in case we don't have correct value
-    return false;
 }

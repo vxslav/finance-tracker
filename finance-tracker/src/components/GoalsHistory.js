@@ -5,7 +5,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
-import { formatDate, formatTime, getDateAndTime } from '../utils/util'
+import { formatDate, formatTime } from '../utils/util'
 import styled from 'styled-components';
 import DateRangeIcon from '@mui/icons-material/DateRange';
 import FeedIcon from '@mui/icons-material/Feed';
@@ -13,6 +13,7 @@ import SavingsIcon from '@mui/icons-material/Savings';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import { toCurrency } from '../utils/util';
 import styles from "./styles/goal.module.css";
+import { useSelector } from "react-redux";
 
 function createData(date, time, description, amount) {
 
