@@ -41,7 +41,7 @@ export default function ReportsPage() {
     setDateRange([null, null])
     filterTransactions(selectedAccounts, amountRange, dateRange)
    }
-  
+
     return (
         <StyledPage status={headerOpen}>
             <Heading>Reports & Analytics</Heading>
