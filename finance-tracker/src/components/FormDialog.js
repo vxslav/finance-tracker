@@ -43,7 +43,7 @@ export default function FormDialog(props) {
     setSelectedDate(null);
     setToDate(getFormatedDate(new Date()));
     setOpen(false);
-    setDateRange([null, null])
+    setDateRange([null, null]);
   };
 
   const handleAdd = (value) => {
@@ -88,9 +88,7 @@ export default function FormDialog(props) {
     handleClose();
   };
 
-  const handleEdit = (value) => {
-    dispatch(setSnackbar(true, "success", "Transaction updated!"))
-    
+  const handleEdit = (value) => {    
     const detail = {
       amount,
       descr,
@@ -120,7 +118,16 @@ export default function FormDialog(props) {
             from: JSON.stringify(new Date(dateRange[0])).replaceAll('"', ''), 
             to: JSON.stringify(new Date(dateRange[1])).replaceAll('"', '')
           }
-        
+          setAmount(0);
+          setDescr("");
+          setAccount("");
+          setCategory("");
+          setFromDate(getFormatedDate(new Date()));
+          setSelectedDate(null);
+          setToDate(getFormatedDate(new Date()));
+          setOpen(false);
+          setDateRange([null, null]);
+
           dispatch(editBudget(user, details));
         }
         break;
