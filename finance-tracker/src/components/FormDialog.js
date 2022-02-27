@@ -17,10 +17,23 @@ import styles from "./styles/progress_card.module.css";
 import { getFormatedDate } from '../utils/util';
 import { DateRangeFilter } from './filters/DateRangeFilter';
 
+export const OurButton = styled(Button)({
+  boxShadow: 'none',
+  textTransform: 'none',
+  fontSize: 16,
+  padding: '6px 12px',
+  lineHeight: 1.5,
+  background: "#753068",
+  fontFamily: "Poppins",
+  '&:hover': {
+    background: '#ad5389',
+  }
+});
+
 export default function FormDialog(props) {
 
   const [open, setOpen] = useState(false);
-  const [amount, setAmount] = useState(null);
+  const [amount, setAmount] = useState("");
   const [descr, setDescr] = useState("");
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [fromDate, setFromDate] = useState(getFormatedDate(new Date()));
@@ -33,6 +46,13 @@ export default function FormDialog(props) {
 
   const handleClickOpen = () => {
     setOpen(true);
+    if(props.value === "Budget" && props.operation === "edit") {
+      setAmount(props.editdetails.max);
+      setCategory(props.editdetails.name);
+      setFromDate(props.editdetails.dateFrom);
+      setToDate(props.editdetails.dateTo);
+      setDateRange([props.editdetails.dateFrom, props.editdetails.dateTo]);
+    }
   };
 
   const handleClose = () => {
@@ -49,7 +69,6 @@ export default function FormDialog(props) {
 
   const handleAdd = (value) => {
     // dispatch(setSnackbar(true, "success", "Transaction added!"));
-
     const detail = {
       amount,
       descr,
@@ -98,20 +117,7 @@ export default function FormDialog(props) {
       account
     }
 
-    switch(props.value) {
-        case "Expense" :
-          dispatch(editExpense(user, detail, props.prevAccountName, props.expenseID))
-          break;
-
-        case "Savings": 
-          // dispatch(editGoalAction(user, details))
-          break;
-
-        case "Income" : 
-          dispatch(editIncome(user, detail, props.prevAccountName, props.incomeID))
-          break;
-
-        case "Budget" : {
+    if(props.value === "Budget") {
           let details = {
             amount, 
             category,
@@ -119,22 +125,7 @@ export default function FormDialog(props) {
             from: JSON.stringify(new Date(dateRange[0])).replaceAll('"', ''), 
             to: JSON.stringify(new Date(dateRange[1])).replaceAll('"', '')
           }
-          setAmount(0);
-          setDescr("");
-          setAccount("");
-          setCategory("");
-          setFromDate(getFormatedDate(new Date()));
-          setSelectedDate(null);
-          setToDate(getFormatedDate(new Date()));
-          setOpen(false);
-          setDateRange([null, null]);
-
           dispatch(editBudget(user, details));
-        }
-        break;
-        default: {
-          return;
-        }
     }
     handleClose();
   }
@@ -155,20 +146,20 @@ export default function FormDialog(props) {
 
   return (
     <div>
-      <Button 
+      <OurButton 
           className={styles.btn} 
           variant="contained"
-          color={props.value === "Budget" ? "success" : "secondary"}
+          color="secondary"
           onClick={handleClickOpen}>
         {props.operation === "edit" ? "Edit" : "Add"} {props.value}
-      </Button>
+      </OurButton>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>{props.operation === "edit" ? "Edit" : "Add"} {props.value} </DialogTitle>
         <DialogContent>
           <InputFields>
           
             <TextField
-              autoFocus
+              
               margin="dense"
               sx={{width : '240px', marginBottom : props.value == 'Budget' || props.value == 'Savings' ? "15px" : "0"}}
               id="name"
@@ -233,3 +224,4 @@ const InputFields = styled(Pickers)`
   justify-content: flex-start;
   gap: 5px;
 `;
+
