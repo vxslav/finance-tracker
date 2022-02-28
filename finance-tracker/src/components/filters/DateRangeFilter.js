@@ -10,16 +10,6 @@ import Box from '@mui/material/Box';
 export const DateRangeFilter = (props) => {
     const [value, setValue] = React.useState(["", ""]);
 
-    React.useEffect(() => {
-        function handleResize() {
-          setWindowWidth(window.innerWidth);
-          console.log(Math.floor((((window.innerWidth * (4/5)) - 932) / 3)));
-        }
-
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
-    }, []);
-
     return (
       <LocalizationProvider dateAdapter={AdapterDateFns}>
           <DateRangePicker
