@@ -22,7 +22,7 @@ export default function CustomizedSnackbars() {
     if (reason === 'clickaway') {
       return;
     }
-    dispatch(setSnackbar(false))
+    dispatch(setSnackbar(false));
   };
 
   return (
@@ -36,7 +36,7 @@ export default function CustomizedSnackbars() {
             onClose={handleClose} 
             severity={type} 
             sx={{ width: '100%' }}>
-          {msg}
+            {msg}
         </Alert>
       </Snackbar>
     </Stack>
