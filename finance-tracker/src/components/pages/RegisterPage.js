@@ -105,13 +105,17 @@ export default function RegisterPage(){
 
     //getting the local currency of the user
     React.useEffect( () => {
+        let controller = new AbortController();
+        let signal = controller.signal;
+
         function getCurrency(country){
-            fetch(`https://restcountries.com/v3.1/name/${country}?fullText=true`)
+            fetch(`https://restcountries.com/v3.1/name/${country}?fullText=true`, signal)
             .then(resp => resp.json())
             .then(data => setCurrency(Object.keys(data[0].currencies)[0]))
         }
 
         fetch("https://spott.p.rapidapi.com/places/ip/me", {
+            signal,
             "method": "GET",
             "headers": {
                 "x-rapidapi-host": "spott.p.rapidapi.com",
@@ -127,6 +131,10 @@ export default function RegisterPage(){
                 getCurrency(data.name);
             }
         })
+
+        return () => {
+            controller.abort();
+        }
     }, []);
 
     const isFilled = () => {
