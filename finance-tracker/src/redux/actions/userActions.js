@@ -336,7 +336,7 @@ export const addBudget = (user, details) => {
         const userRef = doc(db, "users", user.id);
         const newBudgets = user.budgets;
         const amount = getAmount(user, details.from, details.to, details.category);
-        console.log(amount);
+        // console.log(amount);
         //in case we already have the same budget category we re-write it
         if(newBudgets.some(budget => budget.category === details.category)){
             newBudgets[newBudgets.findIndex(budget => budget.category === details.category)] = {
