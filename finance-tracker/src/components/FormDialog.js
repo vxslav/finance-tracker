@@ -12,7 +12,6 @@ import styled from 'styled-components';
 import { useState} from 'react';
 import { addBudget, addIncome, addExpense, editExpense, editIncome, editBudget, addToGoal } from '../redux/actions/userActions';
 import { useDispatch, useSelector } from 'react-redux';
-import { setSnackbar } from '../redux/actions/snackbarActions';
 import styles from "./styles/progress_card.module.css";
 import { getFormatedDate } from '../utils/util';
 import { DateRangeFilter } from './filters/DateRangeFilter';
@@ -112,14 +111,13 @@ export default function FormDialog(props) {
   };
 
   const handleEdit = (value) => {    
-      const detail = {
-          amount,
-          descr,
-          category,
-          date: selectedDate,
-          account
-      }
-
+      // const detail = {
+      //     amount,
+      //     descr,
+      //     category,
+      //     date: selectedDate,
+      //     account
+      // }
       if(props.value === "Budget") {
             let details = {
               amount, 

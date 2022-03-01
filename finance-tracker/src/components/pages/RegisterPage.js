@@ -84,7 +84,7 @@ export default function RegisterPage(){
                 try{
                     createUser();
                     navigate("/login");
-                    dispatch(setSnackbar(true, "success", "Registration successfull!"))
+                    dispatch(setSnackbar(true, "success", "Registration is successfull!"));
                 }
                 catch(err){
                     setHasError(true);
