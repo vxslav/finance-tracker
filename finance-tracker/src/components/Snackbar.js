@@ -10,16 +10,16 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 });
 
 export default function CustomizedSnackbars() {
-  const isOpen = useSelector(state => state.snackbar.snackbarOpen)
-  const type = useSelector(state => state.snackbar.snackbarType)
-  const msg = useSelector(state => state.snackbar.snackbarMessage)
+  const isOpen = useSelector(state => state.snackbar.snackbarOpen);
+  const type = useSelector(state => state.snackbar.snackbarType);
+  const msg = useSelector(state => state.snackbar.snackbarMessage);
   const dispatch = useDispatch();
 
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
       return;
     }
-    dispatch(setSnackbar(false))
+    dispatch(setSnackbar(false));
   };
 
   return (
@@ -32,7 +32,7 @@ export default function CustomizedSnackbars() {
             onClose={handleClose} 
             severity={type} 
             sx={{ width: '100%' }}>
-          {msg}
+            {msg}
         </Alert>
       </Snackbar>
     </Stack>

@@ -114,5 +114,4 @@ const CustomPaper = styled.div`
     @media (max-width: 990px) {
         height: 100%;
     }
-
 `
