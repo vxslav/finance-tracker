@@ -305,7 +305,7 @@ export const addExpense = (user, details) => {
         }
 
         await updateDoc(userRef, {transactions: newTransactions, accounts: newAccounts});
-        dispatch(setSnackbar(true, "success", "Expense added successfull!"));
+        dispatch(setSnackbar(true, "success", "Expense added successfully!"));
         dispatch({type: ADD_EXPENSE, payload: {transactions: newTransactions, accounts: newAccounts}});
     }
 } 

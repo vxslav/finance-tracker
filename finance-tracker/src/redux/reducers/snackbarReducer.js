@@ -3,7 +3,9 @@ import { SET_SNACKBAR } from '../actions/snackbarActions';
 const INITIAL_STATE = {
     snackbarOpen : false,
     snackbarType : "success",
-    snackbarMessage : ""
+    snackbarMessage : "",
+    vertical : 'bottom',
+    horizontal : 'right'
 }
 
 export const snackbarReducer = (state = INITIAL_STATE, action) => {

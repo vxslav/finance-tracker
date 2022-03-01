@@ -58,7 +58,7 @@ export default function UserInfo(){
                         <EditButton disabled={user.firstName === "" || user.lastName === "" || user.birthdate === ""} handleClick={handleClick}/>
                         <div className={styles.inputWrapper}>
                             <input className={styles.fileInput} onChange={handlePictureUpdate} type="file" name="file1"/>
-                            Upload Avatar
+                            <UploadButton>Upload Avatar</UploadButton>
                         </div>
                     </Info>
                 </Profile>
@@ -101,15 +101,17 @@ const CustomPaper = styled.div`
     display : flex;
     margin-top: -20px;
     padding: 30px;
-    height: 100vh;
+    height: 100%;
     width: 100%;
     flex-flow: column wrap;
     align-items : center;
     background: #D3CCE3;
     background: -webkit-linear-gradient(to right, #E9E4F0, #D3CCE3);
     background: linear-gradient(to right, #E9E4F0, #D3CCE3);
-    @media (max-width: 990px) {
-        height: 100%;
-    }
-
+`
+const UploadButton = styled.span` 
+    font-weight: 300;
+    font-size: 14px;
+    text-transform: uppercase;
+    font-family: 'Roboto', sans-serif;
 `
