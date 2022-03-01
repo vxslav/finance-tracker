@@ -35,30 +35,6 @@ export const updateUserInfoAction = (id, details) => {
 export const logoutAction = {
     type: LOGOUT
 }
-export const addIncomeAction = (incomeObject) => {
-    return {
-        type : ADD_INCOME,
-        payload : incomeObject
-    }
-}
-export const addBudgetAction = (budgetObject) => {
-    return {
-        type : ADD_BUDGET,
-        payload : budgetObject
-    }
-}
-export const addExpenseAction = (expenseObject) => {
-    return {
-        type : ADD_EXPENSE,
-        payload : expenseObject
-    }
-}
-export const addGoalAction = (goalObject) => {
-    return {
-        type : ADD_GOAL,
-        payload : goalObject
-    }
-}
 
 export const clearGoalsAction = {
     type : CLEAR_GOALS
@@ -77,7 +53,6 @@ export const addGoal = (user, goalName, goalAmount) => {
 
 export const updateAvatarAction = (user, picturePath) => {
     return async function(dispatch) {
-        console.log("baba qga");
         const userRef = doc(db, "users", user.id);
         await updateDoc(userRef, {avatar: picturePath});
         dispatch({type: UPDATE_AVATAR, payload: picturePath});
@@ -336,7 +311,6 @@ export const addBudget = (user, details) => {
         const userRef = doc(db, "users", user.id);
         const newBudgets = user.budgets;
         const amount = getAmount(user, details.from, details.to, details.category);
-        // console.log(amount);
         //in case we already have the same budget category we re-write it
         if(newBudgets.some(budget => budget.category === details.category)){
             newBudgets[newBudgets.findIndex(budget => budget.category === details.category)] = {
@@ -365,15 +339,14 @@ export const addBudget = (user, details) => {
         dispatch({type: UPDATE_BUDGET, payload: newBudgets});
 
         //for demonstration purspose
-        // let date = new Date();
-        // date.setMinutes(date.getMinutes() + 1);
-        // new CronJob(date,() => {
-        //     dispatch(removeBudget(user, details.category));
-        // }).start();
+        let date = new Date();
+        date.setMinutes(date.getMinutes() + 1);
+        new CronJob(date,() => {
+            dispatch(removeBudget(user, details.category));
+        }).start();
 
         //code for real removing budgets on time
         // new CronJob(new Date(details.to),() => {
-        //     console.log("removed " + details.category + " budget");
         //     dispatch(removeBudget(user, details.category));
         // }).start();
     }
