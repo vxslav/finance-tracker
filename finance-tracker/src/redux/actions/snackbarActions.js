@@ -12,7 +12,5 @@ export const setSnackbar = (
             snackbarType,
             snackbarMessage,
         }
-     
     }
-   
 }
